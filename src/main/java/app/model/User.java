@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
@@ -43,9 +44,18 @@ public class User {
     @OneToMany(mappedBy = "ticketCreator", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Ticket> ticketsCreated;
     
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private Set<Team> teams;
     
     @OneToMany(mappedBy = "ticketAssigned", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Ticket> ticketsAssigned;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Comment> comments;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<TicketChange> ticketChanges;
+
     public User() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -97,7 +107,37 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+	
+	public Set<Ticket> getTicketsCreated() {
+		return ticketsCreated;
+	}
+	public void setTicketsCreated(Set<Ticket> ticketsCreated) {
+		this.ticketsCreated = ticketsCreated;
+	}
+	public Set<Team> getTeams() {
+		return teams;
+	}
+	public void setTeams(Set<Team> teams) {
+		this.teams = teams;
+	}
+	public Set<Ticket> getTicketsAssigned() {
+		return ticketsAssigned;
+	}
+	public void setTicketsAssigned(Set<Ticket> ticketsAssigned) {
+		this.ticketsAssigned = ticketsAssigned;
+	}
+	public Set<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+	public Set<TicketChange> getTicketChanges() {
+		return ticketChanges;
+	}
+	public void setTicketChanges(Set<TicketChange> ticketChanges) {
+		this.ticketChanges = ticketChanges;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

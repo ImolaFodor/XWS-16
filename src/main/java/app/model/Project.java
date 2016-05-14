@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
@@ -24,6 +25,9 @@ public class Project {
     
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Ticket> projectTickets;
+    
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Team team;
     
 	public int getId() {
 		return id;
@@ -49,7 +53,22 @@ public class Project {
 		this.details = details;
 	}
 	
-	
+
+	public Set<Ticket> getProjectTickets() {
+		return projectTickets;
+	}
+
+	public void setProjectTickets(Set<Ticket> projectTickets) {
+		this.projectTickets = projectTickets;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
+	}
 
 	@Override
 	public int hashCode() {
