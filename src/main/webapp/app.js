@@ -5,7 +5,7 @@ app.constant('STATUS', ['TO_DO' , 'IN_PROGRESS', 'VERIFY', 'DONE']);
 
 app.config(function($stateProvider, $urlRouterProvider, $translateProvider, $httpProvider, $mdThemingProvider,$mdDateLocaleProvider ){
 	
-	$urlRouterProvider.otherwise('/dashboard');
+	$urlRouterProvider.otherwise('/login');
 	$stateProvider
     .state('login', {
         url: '/login',
@@ -17,7 +17,6 @@ app.config(function($stateProvider, $urlRouterProvider, $translateProvider, $htt
         templateUrl: 'module/main.html',
         controller: 'main'
     })
-
     .state('main.projects', {
         url: 'projects',
         templateUrl: 'module/projects/projectsList.html',
