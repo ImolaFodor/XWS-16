@@ -1,26 +1,24 @@
 <md-content flex layout="column" class="container">
-    <md-toolbar class="md-primary md-hue-2 md-whiteframe-z1" layout="row" layout-align="space-around center">
-        <md-button class="md-icon-button" hide-gt-sm data-ng-click="toggleNavigation()">
-            <md-icon class="material-icons">menu</md-icon>
-        </md-button>
-        <md-input-container md-no-float flex-gt-lg="40">
+    <div layout = "row">
+    <md-content class = "frame" layout = "column" flex = "3" >
+    </md-content>
+    <md-content class="frame" layout="column" layout-align="start center" layout-padding flex="27">
+    <md-toolbar class="md-primary md-hue-2 md-whiteframe-z1" layout="row" layout-align="space-around left">
+        <md-input-container md-no-float flex-gt-lg="70">
             <input class="search" ng-model="search.name" placeholder="Search projects">
         </md-input-container>
         <div hide-gt-sm></div>
     </md-toolbar>
-    <md-content class="frame" layout="column" layout-align="start center" layout-padding flex>
     	<div class="container">    
             <md-card ng-init="init()">
                 <md-card-content>
                     <md-list>
-                        <md-list-item class="" ng-repeat="project in projects | filter : {name: search.name}" ng-click="openDetails(project)" ng-show="projects.length > 0">
-                        	<div class="md-list-item-text" layout="column">
-                            <p style = "color:FF6600; font-size:140%;"> {{ project.name }} </p>
-                            </div>
-                            <md-icon ng-if = "user.role ==='MENADZER_SISTEMA'" class="material-icons" ng-click="deleteRestaurant(restaurant, $event)">clear</md-icon>
+                        <md-list-item class="" ng-repeat="project in projects | filter : {name: search.name}" ng-click="openProjectDetails(project)" ng-show="projects.length > 0">
+                            <p style = "color:FF6600; font-size:100%;"> {{ project.name }} </p>
+                            <md-icon  class="material-icons" ng-click="deleteRestaurant(restaurant, $event)">clear</md-icon>
                             <md-divider></md-divider>
                         </md-list-item>
-                        <md-list-item ng-show="restaurants.length === 0"> <label>{{ "NO_PROJECTS_FOUND" | translate}}</label></md-list-item>
+                        <md-list-item ng-show="projects.length === 0"> <label>{{ "NO_PROJECTS_FOUND" | translate}}</label></md-list-item>
                     </md-list>
                 </md-card-content>
             </md-card>
@@ -29,4 +27,58 @@
             </md-button>
         </div>
     </md-content>
+    <md-content class = "frame" layout = "column" flex = "2" >
+    </md-content>	
+    <md-content class = "frame" layout-padding layout = "column" flex ng-show = "showProjectDetails">
+    <md-toolbar class="md-primary md-hue-2 md-whiteframe-z1" layout="row" layout-align="space-around center">
+    	<md-input-container md-no-float flex-gt-lg="40">
+    		<label>{{project.name}}</label>
+        </md-input-container>
+     </md-toolbar>
+        <div hide-gt-sm></div>
+    	<md-input-container >
+    		<label>{{'NAME' | translate}}</label>
+            <input name="name" ng-model="project.name" >
+        </md-input-container>
+        <md-input-container >
+    		<label>{{'DETAILS' | translate}}</label>
+            <textarea name="details" ng-model="project.details" ></textarea>
+        </md-input-container>
+        	<div class = "container">
+	        <md-card>
+        	<md-card-content>
+        	<div layout = "column">
+        		<h4>{{'USERS_WORKING_ON_PROJECT' |translate}}</h4>
+        		<md-button class ="md-primary " ng-click = "addUserToProject()" flex>{{'ADD_USER_TO_PROJECT' |translate}}</md-button>
+        	</div>
+		        <md-list>
+		        	<md-list-item ng-repeat ="user in project.usersOnProject" ng-show = "project.usersOnProject.length >0">
+		        		<p>{{user.name}}</p>
+		        	</md-list-item>
+		        	<md-list-item ng-show="project.usersOnProject.length === 0"> <label>{{ "NO_USERS_ON_PROJECT" | translate}}</label>
+		        	</md-list-item>
+		        </md-list>
+        	</md-card-content>
+        </md-card>
+        </div>
+        <div class = "container">
+    	<md-card>
+                <md-card-content>
+                <div layout = "column">
+                <h4>{{'PROJECT_TICKETS' |translate}}:</h4>
+				<md-button class ="md-primary " ng-click = "createNewTicket()" flex>{{'CREATE_NEW_TICKET' |translate}}</md-button>
+				</div>                
+                    <md-list>
+                        <md-list-item class="" ng-repeat="ticket in project.projectTickets" ng-click="openTicketDetails(ticket)" ng-show="project.projectTickets.length > 0">
+                            <p> {{ ticket.name }} </p>
+                            <md-divider></md-divider>
+                        </md-list-item>
+                        <md-list-item ng-show="project.projectTickets.length === 0"> <label>{{ "NO_PROJECT_TICKETS" | translate}}</label></md-list-item>
+                    </md-list>
+                </md-card-content>
+            </md-card>
+        </div>
+    </md-content>
+    </div>
+    
 </md-content>

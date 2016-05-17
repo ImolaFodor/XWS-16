@@ -54,7 +54,14 @@ translation.config(function ($translateProvider) {
         FRIENDS: "Prijatelji",
         RESTOURANTS: "Restorani",
         USER: "Korisnik",
-        NO_FRIENDS_FOUND: "User has no friends"
+        NO_FRIENDS_FOUND: "User has no friends",
+        DETAILS: "Details",
+        USERS_WORKING_ON_PROJECT: "Users working on project",
+        NO_USERS_ON_PROJECT: "No users working on project",
+        PROJECT_TICKETS: "Project tickets",
+        NO_PROJECT_TICKETS: "There is no tickets created for this project",
+        CREATE_NEW_TICKET: "Create new ticket",
+        ADD_USER_TO_PROJECT: "Add user to project"
 
     });
     $translateProvider.translations('srb', {
@@ -145,5 +152,5 @@ translation.config(function ($translateProvider) {
         
     });
 
-    $translateProvider.preferredLanguage('srb');
+    $translateProvider.preferredLanguage('en');
 });

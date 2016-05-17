@@ -45,7 +45,7 @@ public class User {
     private Set<Ticket> ticketsCreated;
     
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private Set<Team> teams;
+	private Set<Project> projects;
     
     @OneToMany(mappedBy = "ticketAssigned", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Ticket> ticketsAssigned;
@@ -114,12 +114,6 @@ public class User {
 	public void setTicketsCreated(Set<Ticket> ticketsCreated) {
 		this.ticketsCreated = ticketsCreated;
 	}
-	public Set<Team> getTeams() {
-		return teams;
-	}
-	public void setTeams(Set<Team> teams) {
-		this.teams = teams;
-	}
 	public Set<Ticket> getTicketsAssigned() {
 		return ticketsAssigned;
 	}
@@ -137,6 +131,13 @@ public class User {
 	}
 	public void setTicketChanges(Set<TicketChange> ticketChanges) {
 		this.ticketChanges = ticketChanges;
+	}
+	
+	public Set<Project> getProjects() {
+		return projects;
+	}
+	public void setProjects(Set<Project> projects) {
+		this.projects = projects;
 	}
 	@Override
 	public int hashCode() {

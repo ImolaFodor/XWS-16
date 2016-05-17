@@ -1,0 +1,29 @@
+<style>
+ md-dialog {
+       height:90%;
+       width:90%;
+       max-height:100%;
+       max-width: 100%;
+       position: relative;
+       top: 10;
+       left: 10;
+       right: 10;
+       down: 10;
+       border-radius: 5;
+   }
+   
+ md-dialog-actions.cancelSaveCv{
+ 	position: absolute;
+ 	bottom : 0;
+ 	right : 0;
+ }
+</style>
+<md-dialog data-ng-init="init()">
+    <md-dialog-content>
+        
+    </md-dialog-content>
+    <md-dialog-actions class =  "cancelSaveCv" >
+        <md-button class = "md-primary md-raised" ng-click="cancel()">{{'CANCEL' | translate}}</md-button>
+        <md-button ng-hide = "" class = "md-primary md-raised" ng-click="save()" ng-disabled="false">{{'SAVE' | translate}}</md-button>
+    </md-dialog-actions>
+</md-dialog>
