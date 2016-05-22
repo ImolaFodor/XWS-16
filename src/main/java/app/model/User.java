@@ -14,6 +14,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User {
 
@@ -42,11 +45,13 @@ public class User {
     private String email;
     
     @OneToMany(mappedBy = "ticketCreator", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonBackReference
     private Set<Ticket> ticketsCreated;
     
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Set<Project> projects;
     
+    @JsonBackReference
     @OneToMany(mappedBy = "ticketAssigned", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Ticket> ticketsAssigned;
     
@@ -54,6 +59,7 @@ public class User {
     private Set<Comment> comments;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonBackReference
     private Set<TicketChange> ticketChanges;
 
     public User() {

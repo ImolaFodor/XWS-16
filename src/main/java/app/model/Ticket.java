@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,8 +14,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Ticket {
+
+	public enum Priority {
+		BLOCKER, CRITICAL, MAJOR, MINOR, TRIVIAL
+	}
+
+	public enum Status {
+		TO_DO, IN_PROGRESS, VERIFY, DONE
+	}
+
 	@Id
 	@GeneratedValue
 	private int id;
@@ -23,41 +36,37 @@ public class Ticket {
 
 	@NotNull
 	private String description;
-	
-	public enum Priority{
-		BLOCKER, CRITICAL, MAJOR, MINOR, TRIVIAL
-	}
-	
-	public enum Status{
-		TO_DO,IN_PROGRESS, VERIFY, DONE
-	}
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Priority priority;
+
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
 	@NotNull
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn
+	@JsonManagedReference
 	private Project project;
 
 	@NotNull
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn
+	@JsonManagedReference
 	private User ticketCreator;
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn
+	@JsonManagedReference
 	private User ticketAssigned;
 
 	@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Comment> comments;
-	
+
 	@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<TicketChange> ticketChanges;
-	
-	@NotNull
-	private Ticket.Priority priority;
-	
-	@NotNull
-	private Ticket.Status status;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -105,7 +114,7 @@ public class Ticket {
 	public void setTicketAssigned(User ticketAssigned) {
 		this.ticketAssigned = ticketAssigned;
 	}
-	
+
 	public Set<Comment> getComments() {
 		return comments;
 	}
@@ -122,19 +131,19 @@ public class Ticket {
 		this.ticketChanges = ticketChanges;
 	}
 
-	public Ticket.Priority getPriority() {
+	public Priority getPriority() {
 		return priority;
 	}
 
-	public void setPriority(Ticket.Priority priority) {
+	public void setPriority(Priority priority) {
 		this.priority = priority;
 	}
 
-	public Ticket.Status getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(Ticket.Status status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
