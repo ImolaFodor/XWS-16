@@ -12,6 +12,7 @@
                 <md-card-content>
                     <md-list>
                         <md-list-item class="md-3-line" ng-repeat="ticket in tickets" ng-show="tickets.length > 0">
+                        <p>{{ticket.name}}</p>
       					</md-list-item>
                         <md-list-item ng-show="tickets.length === 0"> <label>{{ "NO_TICKETS_FOUND" | translate}}</label></md-list-item>
                     </md-list>

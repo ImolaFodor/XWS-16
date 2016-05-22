@@ -9,9 +9,11 @@ app.controller('dashboardController', function($scope, ticketService, loginServi
 	}
 	
 	function loadTickets(){
-		$scope.tickets = [];
 		ticketService.getTickets($scope.user.id, function(response){
 			$scope.tickets = response.data;
+			
+			console.log("tickets");
+			console.log($scope.tickets)
 		});
 	}
 });
