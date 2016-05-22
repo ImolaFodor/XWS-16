@@ -17,8 +17,6 @@ app.controller('login', function($scope, $state, $mdDialog, $translate, loginSer
         		$scope.user = response.data;
         		$state.transitionTo('main.dashboard');
         	});
-        	
-            
         }, function(response){
         	console.log(response);
         	if(response.data == "BAD_PASSWORD"){

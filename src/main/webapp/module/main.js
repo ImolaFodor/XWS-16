@@ -1,4 +1,4 @@
-app.controller('main', function($scope, $state, $mdUtil, $mdSidenav){
+app.controller('main', function($scope, $state, $mdUtil, $mdSidenav, loginService){
 
     $scope.init = function(){
         

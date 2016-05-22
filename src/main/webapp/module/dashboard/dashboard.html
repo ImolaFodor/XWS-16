@@ -8,7 +8,13 @@
     </md-toolbar>
     <md-content class="frame" layout="column" layout-align="start center" layout-padding flex>
     	<div class="container">    
-          
+          <md-card ng-init="init()">
+                <md-card-content>
+                    <md-list>
+                        <md-list-item class="md-3-line" ng-repeat="ticket in tickets" ng-show="tickets.length > 0">
+      					</md-list-item>
+                        <md-list-item ng-show="tickets.length === 0"> <label>{{ "NO_TICKETS_FOUND" | translate}}</label></md-list-item>
+                    </md-list>
         </div>
     </md-content>
 </md-content>
