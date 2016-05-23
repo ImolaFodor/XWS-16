@@ -29,5 +29,13 @@ public class TicketController {
 		return new ResponseEntity(tickets, HttpStatus.OK);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}/{priority}")
+	public ResponseEntity getTicketsByPriority(@PathVariable("id") int id, @PathVariable("priority") app.model.Ticket.Priority priority){
+		Set<Ticket> tickets = ticketRepository.findTicketByPriority(id, priority);
+		
+		return new ResponseEntity(tickets, HttpStatus.OK);
+	}
+	
+	
 
 }

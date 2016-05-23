@@ -3,6 +3,7 @@ app.controller('projectsListController', function($scope, $mdDialog, projectServ
 		$scope.projects = [];
 		projectService.getProjects(function(response){
 			$scope.projects = response.data;
+			console.log($scope.projects);
 		})
 	};
 	

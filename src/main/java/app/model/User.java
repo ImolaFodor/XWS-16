@@ -48,6 +48,7 @@ public class User {
     @JsonBackReference
     private Set<Ticket> ticketsCreated;
     
+    @JsonBackReference
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Set<Project> projects;
     

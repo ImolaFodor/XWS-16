@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/XWS-16.iml" filepath="$PROJECT_DIR$/.idea/modules/XWS-16.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/XWS-16_main.iml" filepath="$PROJECT_DIR$/.idea/modules/XWS-16_main.iml" group="XWS-16" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/XWS-16_test.iml" filepath="$PROJECT_DIR$/.idea/modules/XWS-16_test.iml" group="XWS-16" />
+    </modules>
+  </component>
+</project>

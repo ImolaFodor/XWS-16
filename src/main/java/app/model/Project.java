@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Project {
@@ -29,6 +30,7 @@ public class Project {
     @JsonBackReference
     private Set<Ticket> projectTickets;
     
+    @JsonManagedReference
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<User> usersOnProject;
     

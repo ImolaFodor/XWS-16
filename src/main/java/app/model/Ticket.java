@@ -38,11 +38,11 @@ public class Ticket {
 	private String description;
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private Priority priority;
+	private Priority priority=Priority.TRIVIAL;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private Status status;
+	private Status status= Status.TO_DO;
 
 	@NotNull
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

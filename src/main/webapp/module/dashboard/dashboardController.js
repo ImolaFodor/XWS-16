@@ -4,9 +4,9 @@ app.controller('dashboardController', function($scope, ticketService, loginServi
 			$scope.user = response.data;
 			console.log($scope.user);
 			loadTickets();
-		})
-		
-	}
+		})}
+	
+	$scope.priorities=['BLOCKER', 'CRITICAL', 'MAJOR', 'MINOR', 'TRIVIAL'];
 	
 	function loadTickets(){
 		ticketService.getTickets($scope.user.id, function(response){
@@ -16,4 +16,13 @@ app.controller('dashboardController', function($scope, ticketService, loginServi
 			console.log($scope.tickets)
 		});
 	}
+	
+	$scope.getFilteredTickets = function(){
+		ticketService.getTicketsByPriority($scope.user.id, $scope.selected, function(response){
+				$scope.filtered_tickets = response.data;
+				console.log($scope.filtered_tickets)
+			})
+	}
+	
+	
 });

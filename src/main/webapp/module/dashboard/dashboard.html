@@ -6,6 +6,15 @@
         
         <div hide-gt-sm></div>
     </md-toolbar>
+    <div class="sample" align="center">
+  		<h1>Prikaži i: </h1>
+  		<md-input-container>
+  			<md-select ng-model="selected" ng-change="getFilteredTickets()">
+		  		<md-option ng-repeat="p in priorities" value="{{p}}">{{p}}</md-option>
+			</md-select>
+		</md-input-container>
+	</div>
+	
     <md-content class="frame" layout="column" layout-align="start center" layout-padding flex>
     	<div class="container">    
           <md-card ng-init="init()">
@@ -15,6 +24,19 @@
                         <p>{{ticket.name}}</p>
       					</md-list-item>
                         <md-list-item ng-show="tickets.length === 0"> <label>{{ "NO_TICKETS_FOUND" | translate}}</label></md-list-item>
+                    </md-list>
+        </div>
+    </md-content>
+    
+    <md-content class="frame" layout="column" layout-align="start center" layout-padding flex>
+    	<div class="container2">    
+          <md-card ng-init="init()">
+                <md-card-content>
+                    <md-list>
+                        <md-list-item class="md-3-line" ng-repeat="fticket in filtered_tickets" ng-show="filtered_tickets.length > 0">
+                        <p>{{fticket.name}}</p>
+      					</md-list-item>
+                        <md-list-item ng-show="filtered_tickets.length === 0"> <label>{{ "NO_TICKETS_FOUND" | translate}}</label></md-list-item>
                     </md-list>
         </div>
     </md-content>
