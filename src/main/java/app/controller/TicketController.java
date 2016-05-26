@@ -47,15 +47,20 @@ public class TicketController {
 		
 		ArrayList<Double> percentages = new ArrayList<Double>((int)userRepository.count());
 		
+		System.out.println(userRepository.count());
+		
 		for(int i=0; i<userRepository.count(); i++){
 			users_tickets[i]=ticketRepository.findTicketByProjectAndUser(pr_id,i);
-			
+			System.out.println(users_tickets[i]);
 		}
 		
 		for(int k=0; k<users_tickets.length; k++){
-			double percentage= (users_tickets[k]/tot_tickets)*100;		
+			double percentage= (users_tickets[k]/tot_tickets)*100;
+			System.out.println(percentage);
 			percentages.add(percentage);
 		}	
+		
+		
 		
 		return new ResponseEntity(percentages, HttpStatus.OK);
 	}

@@ -10,8 +10,8 @@
                     </md-list>
                 </md-card-content>
             </md-card>
-            <md-content ng-show="showProjectReport" ng-repeat="percentage in percentages">
-    			<md-progress-linear md-mode="determinate" value="{{percentage}}"></md-progress-linear>   
+            <md-content ng-show="showProjectReport" >
+    			<md-progress-linear ng-repeat="percentage in percentages" md-mode="determinate" value="{{percentage}}"></md-progress-linear>   
 			</md-content>
 </div>
 
