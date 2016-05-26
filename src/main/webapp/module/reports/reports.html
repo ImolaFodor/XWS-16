@@ -1,0 +1,19 @@
+<md-content>
+<div class="container">    
+            <md-card ng-init="init()">
+                <md-card-content>
+                    <md-list>
+                        <md-list-item class="" ng-repeat="project in projects" ng-click="openProjectReport(project.id)" ng-show="projects.length > 0">
+                            <p style = "color:FF6600; font-size:100%;"> {{ project.name }} </p>
+                        </md-list-item>
+                        <md-list-item ng-show="projects.length === 0"> <label>NEMA PROJEKATA</label></md-list-item>
+                    </md-list>
+                </md-card-content>
+            </md-card>
+            <md-content ng-show="showProjectReport" ng-repeat="percentage in percentages">
+    			<md-progress-linear md-mode="determinate" value="{{percentage}}"></md-progress-linear>   
+			</md-content>
+</div>
+
+
+</md-content>

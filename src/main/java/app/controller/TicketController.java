@@ -39,8 +39,8 @@ public class TicketController {
 		return new ResponseEntity(tickets, HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "percentages/{pr_id}")
-	public ResponseEntity getPercentagesByUserOnProject(@PathVariable("priority") int pr_id){
+	@RequestMapping(method = RequestMethod.GET, value = "/percentages/{pr_id}")
+	public ResponseEntity getPercentagesByUserOnProject(@PathVariable("pr_id") int pr_id){
 		int tot_tickets = ticketRepository.findTicketByProject(pr_id);
 		
 		int[] users_tickets = new int[(int)userRepository.count()];

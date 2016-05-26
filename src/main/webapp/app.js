@@ -31,6 +31,11 @@ app.config(function($stateProvider, $urlRouterProvider, $translateProvider, $htt
         url: 'profile',
         templateUrl: 'module/profile/profileMain.html',
         controller: 'profileMainController'
+    })
+    .state('main.reports', {
+        url: 'reports',
+        templateUrl: 'module/reports/reports.html',
+        controller: 'reportsController'
     });
 	$mdThemingProvider.theme('default')
     .primaryPalette('light-green')
