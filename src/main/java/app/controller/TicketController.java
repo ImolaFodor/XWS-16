@@ -3,7 +3,6 @@ package app.controller;
 import java.util.ArrayList;
 import java.util.Set;
 
-import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.model.Ticket;
+import app.model.User;
+import app.repository.ProjectRepository;
 import app.repository.TicketRepository;
 import app.repository.UserRepository;
 
@@ -24,6 +25,8 @@ public class TicketController {
 	TicketRepository ticketRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	ProjectRepository projectRepository;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity getTickets(@PathVariable("id") int id){
@@ -47,11 +50,12 @@ public class TicketController {
 		
 		ArrayList<Double> percentages = new ArrayList<Double>((int)userRepository.count());
 		
-		System.out.println(userRepository.count());
-		
-		for(int i=0; i<userRepository.count(); i++){
-			users_tickets[i]=ticketRepository.findTicketByProjectAndUser(pr_id,i);
-			System.out.println(users_tickets[i]);
+		ArrayList<User> allUsers = (ArrayList<User>) userRepository.findAll();
+		int i =0;
+		for(User u: allUsers){
+			ArrayList<Ticket> assignedUserTickets = (ArrayList<Ticket>) ticketRepository.findTicketByProjectAndTicketAssigned(projectRepository.findOne(pr_id), u);
+			users_tickets[i]= assignedUserTickets.size();
+			i++;
 		}
 		
 		for(int k=0; k<users_tickets.length; k++){
@@ -59,9 +63,6 @@ public class TicketController {
 			System.out.println(percentage);
 			percentages.add(percentage);
 		}	
-		
-		
-		
 		return new ResponseEntity(percentages, HttpStatus.OK);
 	}
 	

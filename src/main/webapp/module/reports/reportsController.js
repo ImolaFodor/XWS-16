@@ -1,5 +1,6 @@
 app.controller('reportsController', function($scope, ticketService, loginService, userService, projectService){
 	$scope.init = function(){
+		console.log("REPOTS");
 		loginService.getProfile(function(response){
 			$scope.user = response.data;
 			console.log($scope.user);
@@ -18,9 +19,6 @@ app.controller('reportsController', function($scope, ticketService, loginService
 			
 		});
 	}
-	
-		
-			
 		$scope.openProjectReport = function(project){
 			$scope.showProjectReport = true;
 			$scope.project = project;
