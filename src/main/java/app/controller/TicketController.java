@@ -1,5 +1,6 @@
 package app.controller;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.hibernate.mapping.List;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import app.model.Ticket;
 import app.repository.TicketRepository;
+import app.repository.UserRepository;
 
 @RestController
 @RequestMapping("/tickets")
@@ -20,7 +22,8 @@ public class TicketController {
 
 	@Autowired
 	TicketRepository ticketRepository;
-	
+	@Autowired
+	UserRepository userRepository;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity getTickets(@PathVariable("id") int id){
@@ -34,6 +37,27 @@ public class TicketController {
 		Set<Ticket> tickets = ticketRepository.findTicketByPriority(id, priority);
 		
 		return new ResponseEntity(tickets, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "percentages/{pr_id}")
+	public ResponseEntity getPercentagesByUserOnProject(@PathVariable("priority") int pr_id){
+		int tot_tickets = ticketRepository.findTicketByProject(pr_id);
+		
+		int[] users_tickets = new int[(int)userRepository.count()];
+		
+		ArrayList<Double> percentages = new ArrayList<Double>((int)userRepository.count());
+		
+		for(int i=0; i<userRepository.count(); i++){
+			users_tickets[i]=ticketRepository.findTicketByProjectAndUser(pr_id,i);
+			
+		}
+		
+		for(int k=0; k<users_tickets.length; k++){
+			double percentage= (users_tickets[k]/tot_tickets)*100;		
+			percentages.add(percentage);
+		}	
+		
+		return new ResponseEntity(percentages, HttpStatus.OK);
 	}
 	
 	
