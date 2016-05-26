@@ -3,7 +3,6 @@ app.controller('reportsController', function($scope, ticketService, loginService
 		console.log("REPOTS");
 		loginService.getProfile(function(response){
 			$scope.user = response.data;
-			console.log($scope.user);
 			loadProjectsAndUsers();
 		})
 	}
@@ -11,7 +10,6 @@ app.controller('reportsController', function($scope, ticketService, loginService
 	function loadProjectsAndUsers(){
 		projectService.getProjects(function(response){
 			$scope.projects = response.data;
-			console.log($scope.projects);
 		});
 			
 		userService.getUsers(function(response){
@@ -23,8 +21,7 @@ app.controller('reportsController', function($scope, ticketService, loginService
 			$scope.showProjectReport = true;
 			$scope.project = project;
 			ticketService.getPercentagesByUserOnProject($scope.project, function(response){
-				$scope.percentages = response.data;
-				console.log($scope.percentages)
+				$scope.reports = response.data;
 		});
 	}
 			

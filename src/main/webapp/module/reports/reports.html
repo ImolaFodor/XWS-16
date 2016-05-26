@@ -6,13 +6,23 @@
                     <md-list>
                         <md-list-item class="" ng-repeat="project in projects" ng-click="openProjectReport(project.id)" ng-show="projects.length > 0">
                             <p style = "color:FF6600; font-size:100%;"> {{ project.name }} </p>
+                            <md-divider></md-divider>
                         </md-list-item>
                         <md-list-item ng-show="projects.length === 0"> <label>NEMA PROJEKATA</label></md-list-item>
                     </md-list>
                 </md-card-content>
             </md-card>
             <md-content ng-show="showProjectReport" >
-    			<md-progress-linear ng-repeat="percentage in percentages" md-mode="determinate" value="{{percentage[value]}}"></md-progress-linear>   
+            	<div ng-repeat = "report in reports">
+            	<div layout = "row">
+            		<label flex = "15">{{report.user.name}}</label>
+            		<label flex = "10">{{report.numberOfTickets}}</label>
+    				<md-progress-linear md-mode="determinate" value="{{report.percentege}}" flex = "50"></md-progress-linear>
+    				<div flex = "4"></div>
+    				<label flex = "10">{{report.percentege}}%</label>
+    			</div>
+    			<md-divider></md-divider>
+    			</div>   
 			</md-content>
 </div>
 

@@ -1,8 +1,6 @@
 package app.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.model.Project;
 import app.model.Ticket;
 import app.model.User;
+import app.reportModel.ProjectTicketsByUserReport;
 import app.repository.ProjectRepository;
 import app.repository.TicketRepository;
 import app.repository.UserRepository;
@@ -47,23 +47,25 @@ public class TicketController {
 	@RequestMapping(method = RequestMethod.GET, value = "/percentages/{pr_id}")
 	public ResponseEntity getPercentagesByUserOnProject(@PathVariable("pr_id") int pr_id){
 		int tot_tickets = ticketRepository.findTicketByProject(pr_id);
+		Project project = projectRepository.findOne(pr_id);
 		
-		int[] users_tickets = new int[(int)userRepository.count()];
-		
-		HashMap percentages = new HashMap();
-		
-		ArrayList<User> allUsers = (ArrayList<User>) userRepository.findAll();
+		if(project == null){
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		Set<User> allUsers = project.getUsersOnProject();
+		int[] users_tickets = new int[(int)allUsers.size()];
+		ArrayList<ProjectTicketsByUserReport> allUserReports = new ArrayList<ProjectTicketsByUserReport>();
 		int i =0;
 		for(User u: allUsers){
-			ArrayList<Ticket> assignedUserTickets = (ArrayList<Ticket>) ticketRepository.findTicketByProjectAndTicketAssigned(projectRepository.findOne(pr_id), u);
+			ArrayList<Ticket> assignedUserTickets = (ArrayList<Ticket>) ticketRepository.findTicketByProjectAndTicketAssigned(project, u);
 			users_tickets[i]= assignedUserTickets.size();
-			double percentage= (users_tickets[i]/tot_tickets)*100;
-			System.out.println(percentage);
-			percentages.put(u,percentage);
+			double percentage= ((double)users_tickets[i]/(double)tot_tickets)*100;
+			ProjectTicketsByUserReport ptur = new ProjectTicketsByUserReport(u, percentage, users_tickets[i]);
+			allUserReports.add(ptur);
 			i++;
 		}
 		
-		return new ResponseEntity(percentages, HttpStatus.OK);
+		return new ResponseEntity(allUserReports, HttpStatus.OK);
 	}
 	
 	
