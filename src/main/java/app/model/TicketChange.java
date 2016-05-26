@@ -21,7 +21,7 @@ public class TicketChange {
 	
 	private String text;
 	
-	private Date datetime;
+	private Date date_time;
 	
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn
@@ -49,11 +49,11 @@ public class TicketChange {
 	}
 
 	public Date getDatetime() {
-		return datetime;
+		return date_time;
 	}
 
 	public void setDatetime(Date datetime) {
-		this.datetime = datetime;
+		this.date_time = datetime;
 	}
 
 	public User getUser() {
@@ -76,7 +76,7 @@ public class TicketChange {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((datetime == null) ? 0 : datetime.hashCode());
+		result = prime * result + ((date_time == null) ? 0 : date_time.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
 		result = prime * result + ((ticket == null) ? 0 : ticket.hashCode());
@@ -93,10 +93,10 @@ public class TicketChange {
 		if (getClass() != obj.getClass())
 			return false;
 		TicketChange other = (TicketChange) obj;
-		if (datetime == null) {
-			if (other.datetime != null)
+		if (date_time == null) {
+			if (other.date_time != null)
 				return false;
-		} else if (!datetime.equals(other.datetime))
+		} else if (!date_time.equals(other.date_time))
 			return false;
 		if (id != other.id)
 			return false;
@@ -120,7 +120,7 @@ public class TicketChange {
 
 	@Override
 	public String toString() {
-		return "TicketChange [id=" + id + ", text=" + text + ", datetime=" + datetime + ", user=" + user + ", ticket="
+		return "TicketChange [id=" + id + ", text=" + text + ", datetime=" + date_time + ", user=" + user + ", ticket="
 				+ ticket + "]";
 	}
 	
