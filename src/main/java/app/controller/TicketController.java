@@ -1,6 +1,8 @@
 package app.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,21 +50,19 @@ public class TicketController {
 		
 		int[] users_tickets = new int[(int)userRepository.count()];
 		
-		ArrayList<Double> percentages = new ArrayList<Double>((int)userRepository.count());
+		HashMap percentages = new HashMap();
 		
 		ArrayList<User> allUsers = (ArrayList<User>) userRepository.findAll();
 		int i =0;
 		for(User u: allUsers){
 			ArrayList<Ticket> assignedUserTickets = (ArrayList<Ticket>) ticketRepository.findTicketByProjectAndTicketAssigned(projectRepository.findOne(pr_id), u);
 			users_tickets[i]= assignedUserTickets.size();
+			double percentage= (users_tickets[i]/tot_tickets)*100;
+			System.out.println(percentage);
+			percentages.put(u,percentage);
 			i++;
 		}
 		
-		for(int k=0; k<users_tickets.length; k++){
-			double percentage= (users_tickets[k]/tot_tickets)*100;
-			System.out.println(percentage);
-			percentages.add(percentage);
-		}	
 		return new ResponseEntity(percentages, HttpStatus.OK);
 	}
 	
