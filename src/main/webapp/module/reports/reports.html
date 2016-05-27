@@ -18,9 +18,9 @@
             	<div layout = "row">
             		<label flex = "15">{{report.user.name}}</label>
             		<label flex = "10">{{report.numberOfTickets}}</label>
-    				<md-progress-linear md-mode="determinate" value="{{report.percentege}}" flex = "50"></md-progress-linear>
+    				<md-progress-linear md-mode="determinate" value="{{report.percentege.toFixed(2)}}" flex = "50"></md-progress-linear>
     				<div flex = "4"></div>
-    				<label flex = "10">{{report.percentege}}%</label>
+    				<label flex = "10">{{report.percentege.toFixed(2)}}%</label>
     			</div>
     			<md-divider></md-divider>
     			</div>   
@@ -29,9 +29,9 @@
             	<div layout = "row">
             		<label flex = "15">{{report2.user.name}}</label>
             		<label flex = "10">{{report2.numberOfTickets}}</label>
-    				<md-progress-linear md-mode="determinate" value="{{report2.percentege}}" flex = "50"></md-progress-linear>
+    				<md-progress-linear md-mode="determinate" value="{{report2.percentege.toFixed(2)}}" flex = "50"></md-progress-linear>
     				<div flex = "4"></div>
-    				<label flex = "10">{{report2.percentege}}%</label>
+    				<label flex = "10">{{report2.percentege.toFixed(2)}}%</label>
     			</div>
     			<md-divider></md-divider>
     			</div>
