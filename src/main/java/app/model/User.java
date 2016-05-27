@@ -26,7 +26,7 @@ public class User {
 	
 	@Id
     @GeneratedValue
-    private int id;
+    public int id;
 
     @NotNull
     private String name;

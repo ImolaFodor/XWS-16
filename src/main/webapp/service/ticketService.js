@@ -9,6 +9,10 @@ app.service('ticketService', function($http){
 		
 		getPercentagesByUserOnProject: function(projectId, onSuccess, onError){
 			$http.get("tickets/percentages/"+projectId).then(onSuccess, onError);
+		},
+		
+		getPercentagesByUserOnProjectDone: function(projectId, onSuccess, onError){
+			$http.get("tickets/percentagesdone/"+projectId).then(onSuccess, onError);
 		}
 	}
 });

@@ -9,10 +9,13 @@ import org.springframework.data.repository.query.Param;
 
 import app.model.Project;
 import app.model.Ticket;
+import app.model.Ticket.Status;
 import app.model.User;
 
 public interface TicketRepository extends JpaRepository<Ticket, Integer>{
 	
+	public Status status = Status.DONE;
+
 	@Query("SELECT t FROM Ticket t WHERE t.ticketAssigned.id=:id)")
     public Set<Ticket> findTicketByUserId(@Param("id") int id);
 	
@@ -28,6 +31,9 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer>{
 	
 	//@Query("SELECT count(t) FROM Ticket t WHERE t.project.id=:id and t.ticketAssigned.id=:id_user GROUP BY t.project.id)") //ukupan broj tiketa po projektu za datog korisnika
     public List<Ticket> findTicketByProjectAndTicketAssigned(Project p, User ticketAssigned );
+    
+    public List<Ticket> findTicketByProjectAndTicketAssignedAndStatus(Project p, User ticketAssigned, app.model.Ticket.Status s );
+  
 	
 	/*@Query("SELECT t FROM  Ticket t WHERE t.projec.id =:id and t.ticketAssigned.id=:id_user")
 	public Set<Ticket> getTicketsByProjectAndAssignedUser(@Param("id") int id, @Param("id_user") int id_user);*/

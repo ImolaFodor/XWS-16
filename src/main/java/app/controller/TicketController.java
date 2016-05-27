@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import app.model.Project;
 import app.model.Ticket;
+import app.model.Ticket.Status;
 import app.model.User;
 import app.reportModel.ProjectTicketsByUserReport;
 import app.repository.ProjectRepository;
@@ -58,6 +59,31 @@ public class TicketController {
 		int i =0;
 		for(User u: allUsers){
 			ArrayList<Ticket> assignedUserTickets = (ArrayList<Ticket>) ticketRepository.findTicketByProjectAndTicketAssigned(project, u);
+			users_tickets[i]= assignedUserTickets.size();
+			double percentage= ((double)users_tickets[i]/(double)tot_tickets)*100;
+			ProjectTicketsByUserReport ptur = new ProjectTicketsByUserReport(u, percentage, users_tickets[i]);
+			allUserReports.add(ptur);
+			i++;
+		}
+		
+		return new ResponseEntity(allUserReports, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/percentagesdone/{pr_id}")
+	public ResponseEntity getPercentagesByUserOnProjectDone(@PathVariable("pr_id") int pr_id){
+		int tot_tickets = ticketRepository.findTicketByProject(pr_id);
+		Project project = projectRepository.findOne(pr_id);
+		
+		if(project == null){
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		Set<User> allUsers = project.getUsersOnProject();
+		int[] users_tickets = new int[(int)allUsers.size()];
+		ArrayList<ProjectTicketsByUserReport> allUserReports = new ArrayList<ProjectTicketsByUserReport>();
+		int i =0;
+		Status s = Status.DONE;
+		for(User u: allUsers){
+			ArrayList<Ticket> assignedUserTickets = (ArrayList<Ticket>) ticketRepository.findTicketByProjectAndTicketAssignedAndStatus(project, u, app.model.Ticket.Status.DONE);
 			users_tickets[i]= assignedUserTickets.size();
 			double percentage= ((double)users_tickets[i]/(double)tot_tickets)*100;
 			ProjectTicketsByUserReport ptur = new ProjectTicketsByUserReport(u, percentage, users_tickets[i]);

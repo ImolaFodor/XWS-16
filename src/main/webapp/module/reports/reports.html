@@ -13,6 +13,7 @@
                 </md-card-content>
             </md-card>
             <md-content ng-show="showProjectReport" >
+            	<p>Zadaci dodeljeni korisnicima</p>
             	<div ng-repeat = "report in reports">
             	<div layout = "row">
             		<label flex = "15">{{report.user.name}}</label>
@@ -23,8 +24,20 @@
     			</div>
     			<md-divider></md-divider>
     			</div>   
+    			<p>Zavrseni zadaci</p>
+    			<div ng-repeat = "report2 in reports2">	
+            	<div layout = "row">
+            		<label flex = "15">{{report2.user.name}}</label>
+            		<label flex = "10">{{report2.numberOfTickets}}</label>
+    				<md-progress-linear md-mode="determinate" value="{{report2.percentege}}" flex = "50"></md-progress-linear>
+    				<div flex = "4"></div>
+    				<label flex = "10">{{report2.percentege}}%</label>
+    			</div>
+    			<md-divider></md-divider>
+    			</div>
 			</md-content>
-</div>
+			
+
 
 
 </md-content>

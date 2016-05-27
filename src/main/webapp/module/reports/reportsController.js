@@ -22,7 +22,12 @@ app.controller('reportsController', function($scope, ticketService, loginService
 			$scope.project = project;
 			ticketService.getPercentagesByUserOnProject($scope.project, function(response){
 				$scope.reports = response.data;
-		});
+				});
+
+			ticketService.getPercentagesByUserOnProjectDone($scope.project, function(response){
+				$scope.reports2 = response.data;
+			});
+		
 	}
 			
 	
