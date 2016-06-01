@@ -1,5 +1,6 @@
 package app.model;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -30,12 +31,17 @@ public class Ticket {
 	@Id
 	@GeneratedValue
 	private int id;
+	
+	@NotNull
+	private String label;
 
 	@NotNull
 	private String name;
 
-	@NotNull
 	private String description;
+	
+	private Date dateCreated;
+	
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Priority priority=Priority.TRIVIAL;
@@ -47,18 +53,15 @@ public class Ticket {
 	@NotNull
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn
-	@JsonManagedReference
 	private Project project;
 
 	@NotNull
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn
-	@JsonManagedReference
 	private User ticketCreator;
 
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn
-	@JsonManagedReference
 	private User ticketAssigned;
 
 	@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -146,21 +149,36 @@ public class Ticket {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+	
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+	
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((comments == null) ? 0 : comments.hashCode());
+		result = prime * result + ((dateCreated == null) ? 0 : dateCreated.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((priority == null) ? 0 : priority.hashCode());
 		result = prime * result + ((project == null) ? 0 : project.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result + ((ticketAssigned == null) ? 0 : ticketAssigned.hashCode());
-		result = prime * result + ((ticketChanges == null) ? 0 : ticketChanges.hashCode());
-		result = prime * result + ((ticketCreator == null) ? 0 : ticketCreator.hashCode());
 		return result;
 	}
 
@@ -178,12 +196,22 @@ public class Ticket {
 				return false;
 		} else if (!comments.equals(other.comments))
 			return false;
+		if (dateCreated == null) {
+			if (other.dateCreated != null)
+				return false;
+		} else if (!dateCreated.equals(other.dateCreated))
+			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
 		if (id != other.id)
+			return false;
+		if (label == null) {
+			if (other.label != null)
+				return false;
+		} else if (!label.equals(other.label))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -216,12 +244,15 @@ public class Ticket {
 			return false;
 		return true;
 	}
+	
+	
 
 	@Override
 	public String toString() {
-		return "Ticket [id=" + id + ", name=" + name + ", description=" + description + ", project=" + project
-				+ ", ticketCreator=" + ticketCreator + ", ticketAssigned=" + ticketAssigned + ", comments=" + comments
-				+ ", ticketChanges=" + ticketChanges + ", priority=" + priority + ", status=" + status + "]";
+		return "Ticket [id=" + id + ", label=" + label + ", name=" + name + ", description=" + description
+				+ ", dateCreated=" + dateCreated + ", priority=" + priority + ", status=" + status + ", project="
+				+ project + ", ticketCreator=" + ticketCreator + ", ticketAssigned=" + ticketAssigned + ", comments="
+				+ comments + ", ticketChanges=" + ticketChanges + "]";
 	}
 
 }

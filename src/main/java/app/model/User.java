@@ -45,14 +45,14 @@ public class User {
     private String email;
     
     @OneToMany(mappedBy = "ticketCreator", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonBackReference
+    @JsonIgnore
     private Set<Ticket> ticketsCreated;
     
-    @JsonBackReference
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Set<Project> projects;
     
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "ticketAssigned", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Ticket> ticketsAssigned;
     
@@ -60,7 +60,7 @@ public class User {
     private Set<Comment> comments;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonBackReference
+    @JsonIgnore
     private Set<TicketChange> ticketChanges;
 
     public User() {

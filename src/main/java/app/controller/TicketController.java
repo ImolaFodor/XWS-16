@@ -6,7 +6,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,13 +33,23 @@ public class TicketController {
 	@Autowired
 	ProjectRepository projectRepository;
 	
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity getTickets(@PathVariable("id") int id){
 		Set<Ticket> tickets = ticketRepository.findTicketByUserId(id);
 		
 		return new ResponseEntity(tickets, HttpStatus.OK);
 	}
-	
+	@RequestMapping(method = RequestMethod.GET, value = "/project/{id}")
+	public ResponseEntity getTicketByProject(@PathVariable("id") int id){
+		
+		Project project = projectRepository.findOne(id);
+		Set<Ticket> tickets = ticketRepository.findTicketByProject(project);
+		if(project == null){
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity(tickets, HttpStatus.OK);
+	}
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}/{priority}")
 	public ResponseEntity getTicketsByPriority(@PathVariable("id") int id, @PathVariable("priority") app.model.Ticket.Priority priority){
 		Set<Ticket> tickets = ticketRepository.findTicketByPriority(id, priority);
@@ -45,6 +57,22 @@ public class TicketController {
 		return new ResponseEntity(tickets, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("isAuthenticated()")
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	public ResponseEntity updateTicket(@RequestBody Ticket update, @PathVariable("id") int id){
+		Ticket t = ticketRepository.findOne(id);
+		if(t == null){
+			return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		ticketRepository.save(update);
+		return new ResponseEntity(HttpStatus.OK);
+	}
+	@PreAuthorize("isAuthenticated()")
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity updateTicket(@RequestBody Ticket update){
+		ticketRepository.save(update);
+		return new ResponseEntity(HttpStatus.OK);
+	}
 	@RequestMapping(method = RequestMethod.GET, value = "/percentages/{pr_id}")
 	public ResponseEntity getPercentagesByUserOnProject(@PathVariable("pr_id") int pr_id){
 		int tot_tickets = ticketRepository.findTicketByProject(pr_id);

@@ -33,7 +33,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer>{
     public List<Ticket> findTicketByProjectAndTicketAssigned(Project p, User ticketAssigned );
     
     public List<Ticket> findTicketByProjectAndTicketAssignedAndStatus(Project p, User ticketAssigned, app.model.Ticket.Status s );
-  
+    
+    public Set<Ticket> findTicketByProject(Project p);
 	
 	/*@Query("SELECT t FROM  Ticket t WHERE t.projec.id =:id and t.ticketAssigned.id=:id_user")
 	public Set<Ticket> getTicketsByProjectAndAssignedUser(@Param("id") int id, @Param("id_user") int id_user);*/

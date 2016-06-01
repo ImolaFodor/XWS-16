@@ -25,7 +25,6 @@ public class TicketChange {
 	
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn
-	@JsonManagedReference
 	private User user;
 	
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
@@ -79,8 +78,6 @@ public class TicketChange {
 		result = prime * result + ((date_time == null) ? 0 : date_time.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
-		result = prime * result + ((ticket == null) ? 0 : ticket.hashCode());
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 

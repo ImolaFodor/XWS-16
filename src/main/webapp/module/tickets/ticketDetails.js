@@ -1,9 +1,27 @@
-app.controller('ticketDetailsController', function($scope, $mdDialog, ticket){
+app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, STATUS, ticket, ticketService,loggedUser){
 	$scope.init = function(){
 		$scope.ticket = ticket;
+		$scope.status = STATUS;
+		$scope.priority = PRIORITY;
+		$scope.loggedUser = loggedUser
+		console.log($scope.loggedUser);
 	}
 	
 	$scope.cancel = function(){
 		$mdDialog.hide();
+	}
+	$scope.save = function(){
+		if($scope.ticket.id){
+			$scope.ticket.dateCreated = new Date();
+			ticketService.saveTicket($scope.ticket, function(response){
+				$scope.cancel();
+			});
+		}else{
+			$scope.ticket.ticketCreator = $scope.loggedUser;
+			$scope.ticket.dateCreated = new Date();
+			ticketService.insertTicket($scope.ticket, function(response){
+				$scope.cancel();
+			});
+		}
 	}
 });
