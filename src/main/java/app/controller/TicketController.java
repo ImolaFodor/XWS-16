@@ -82,7 +82,7 @@ public class TicketController {
 	}
 	@RequestMapping(method = RequestMethod.GET, value = "/percentages/{pr_id}")
 	public ResponseEntity getPercentagesByUserOnProject(@PathVariable("pr_id") int pr_id){
-		int tot_tickets = ticketRepository.getTicketByProject(pr_id);
+		int tot_tickets = ticketRepository.findTicketByProject(pr_id);
 		Project project = projectRepository.findOne(pr_id);
 		
 		if(project == null){
@@ -106,7 +106,7 @@ public class TicketController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/percentagesdone/{pr_id}")
 	public ResponseEntity getPercentagesByUserOnProjectDone(@PathVariable("pr_id") int pr_id){
-		int tot_tickets = ticketRepository.getTicketByProject(pr_id);
+		int tot_tickets = ticketRepository.findTicketByProject(pr_id);
 		Project project = projectRepository.findOne(pr_id);
 		
 		if(project == null){

@@ -26,6 +26,9 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer>{
 	@Query("SELECT t FROM Ticket t WHERE t.project.id=:id)")
     public List<Ticket> findTicketsByProject(@Param("id") int id);
 	
+	@Query("SELECT count(t) FROM Ticket t WHERE t.project.id=:id GROUP BY t.project.id)")
+	public int findTicketByProject(@Param("id") int id);
+	
 	/*SELECT count(ticket_assigned_id) from ticket
 	where project_id=1
 	group by project_id;*/
@@ -39,6 +42,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer>{
     public List<Ticket> findTicketByProjectAndTicketAssigned(Project p, User ticketAssigned );
     
     public List<Ticket> findTicketByProjectAndTicketAssignedAndStatus(Project p, User ticketAssigned, app.model.Ticket.Status s );
+    
     
     public Set<Ticket> findTicketByProject(Project p);
     
