@@ -14,12 +14,6 @@ public class TicketHistory {
 	private List<Ticket> lTicket;
 	private int lTicketCount;
 	
-	public int getlTicketCount() {
-		return lTicket.size();
-	}
-	public void setlTicketCount(int lTicketCount) {
-		this.lTicketCount = lTicketCount;
-	}
 	public TicketHistory(Date date, List<Ticket> lTicket, int lTicketCount) {
 		super();
 		this.date = date;
@@ -38,5 +32,12 @@ public class TicketHistory {
 	public void setlTicket(List<Ticket> lTicket) {
 		this.lTicket = lTicket;
 	}
+	public int getlTicketCount() {
+		return lTicketCount;
+	}
+	public void setlTicketCount(int lTicketCount) {
+		this.lTicketCount = lTicketCount;
+	}
+	
 }
 

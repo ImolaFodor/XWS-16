@@ -1,15 +1,6 @@
 <div ng-controller="reportsController" ng-init = "init()">
 <md-content >
 <div class="container">    
-			<md-input-container>
-  					<label>Date from: </label>
-  					<input type="text" ng-model="datefrom" placeholder="yyyy-MM-dd">
-				</md-input-container>
-				<md-input-container>
-  					<label>Date to: </label>
-  					<input type="text" ng-model="dateto" placeholder="yyyy-MM-dd"></input>
-				</md-input-container>
-			
             <md-card >
                 <md-card-content>
                     <md-list>
@@ -22,7 +13,7 @@
                 </md-card-content>
             </md-card>
             <md-content ng-show="showAllReports" >
-            	<p>Zadaci dodeljeni korisnicima</p>
+            	<h4>Zadaci dodeljeni korisnicima</h4>
             	<div ng-repeat = "report in reports">
             	<div layout = "row">
             		<label flex = "15">{{report.user.name}}</label>
@@ -33,7 +24,7 @@
     			</div>
     			<md-divider></md-divider>
     			</div>   
-    			<p>Zavrseni zadaci</p>
+    			<h4>Zavrseni zadaci</h4>
     			<div ng-repeat = "report2 in reports2">	
             	<div layout = "row">
             		<label flex = "15">{{report2.user.name}}</label>
@@ -45,10 +36,15 @@
     			<md-divider></md-divider>
     			</div>
     			
-    			<p>Izvestaj 3</p>
-            	<div ng-repeat = "report3 in reports3">
+    			<h4>Izvestaj 3</h4>
+    			<div layout = "row">
+    			<md-datepicker ng-model = "startDateReport3" md-max-date = "endDateReport3" md-placeholder = "Enter start date"></md-datepicker>
+    			<md-datepicker ng-model = "endDateReport3" md-min-date = "startDateReport3" md-placeholder = "Enter end date"></md-datepicker>
+    			<md-button class = "md-primary" ng-click ="getReport3()">{{'GET_REPORT_3' | translate}}</md-button>
+    			</div>
+            	<div ng-repeat = "report3 in reports3" ng-show = "showReport3">
             	<div layout = "row">
-            		<label flex = "15">{{GetFormattedDate(report3.date)}}</label>
+            		<md-datepicker ng-model = "report3.date" disabled></md-datepicker>
     				<md-progress-linear md-mode="determinate" value="{{report3.lTicketCount}}" flex = "50"></md-progress-linear>
     				<div flex = "4"></div>
     				<label flex = "10">{{report3.lTicketCount}}</label>

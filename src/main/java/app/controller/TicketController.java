@@ -1,8 +1,7 @@
 package app.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -129,50 +128,42 @@ public class TicketController {
 		return new ResponseEntity(allUserReports, HttpStatus.OK);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@RequestMapping(method = RequestMethod.GET, value = "/dates/{pr_id}/{date_from}/{date_to}")
-	public ResponseEntity getTicketHistory(@PathVariable("pr_id") int pr_id, @PathVariable("date_from") String s_date_from, @PathVariable("date_to") String s_date_to){
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date date_from=new Date();
-		try {
-			date_from = format.parse(s_date_from);
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	public ResponseEntity getTicketHistory(@PathVariable("pr_id") int pr_id, @PathVariable("date_from") Date dateFrom, @PathVariable("date_to") Date dateTo){
 		
-		SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
-		Date date_to=new Date();
-		try {
-			date_to = format2.parse(s_date_to);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		List<Ticket> lt = ticketRepository.findTicketsByProject(pr_id);
+		List<Ticket> allProjectTickets = ticketRepository.findTicketsByProject(pr_id);
 		List<TicketHistory> lth= new ArrayList<>();
 		
-		for(Ticket t : lt){
-				if(t.getDateCreated().before(date_to) && t.getDateCreated().after(date_from)){
-					List<Ticket> ltd=ticketRepository.findTicketByProjectAndDateCreated(projectRepository.findOne(pr_id),t.getDateCreated());
-					th= new TicketHistory(t.getDateCreated(), ltd, ltd.size());
-					
-					boolean sadrzi_vec=false;
-					for (TicketHistory th2: lth){
-						if(th2.getDate().equals(t.getDateCreated())){
-							sadrzi_vec=true;
-						}
-					}
-					
-					if(!sadrzi_vec){
-						lth.add(th);
-					}
+		List<TicketHistory> retVal = new ArrayList<>();
+		Calendar cStart = Calendar.getInstance();
+		cStart.setTime(dateFrom);
+		Calendar cEnd = Calendar.getInstance();
+		cEnd.setTime(dateTo);
+		cEnd.add(Calendar.DAY_OF_MONTH, 1);
+		int num = 0;
+		while(cStart.getTime().before(cEnd.getTime()) || num>50){
+			
+			TicketHistory ticketH = new TicketHistory();
+			ticketH.setDate(cStart.getTime());
+			ticketH.setlTicketCount(4);
+			ArrayList<Ticket> ticketsByDate = new ArrayList<Ticket>();
+			for(Ticket t: allProjectTickets){
+				if(t.getDateCreated().getDay() == cStart.getTime().getDay() && t.getDateCreated().getMonth() == cStart.getTime().getMonth() 
+						&& t.getDateCreated().getYear() == cStart.getTime().getYear()){
+					ticketsByDate.add(t);
 					
 				}
+			}
+			ticketH.setlTicket(ticketsByDate);
+			ticketH.setlTicketCount(ticketH.getlTicket().size());
+			System.out.println("Date: "+ticketH.getDate().toString()+" size: "+ticketH.getlTicketCount());
+			retVal.add(ticketH);
+			cStart.add(Calendar.DAY_OF_MONTH, 1);
+			num++;
 		}
-		System.out.println(lth);
 		
-		return new ResponseEntity(lth, HttpStatus.OK);
+		return new ResponseEntity(retVal, HttpStatus.OK);
 	}
 
 }
