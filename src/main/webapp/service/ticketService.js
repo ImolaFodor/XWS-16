@@ -22,6 +22,9 @@ app.service('ticketService', function($http){
 		},
 		insertTicket: function(ticket ,onSuccess, onError){
 			$http.post("tickets/",ticket).then(onSuccess, onError);
+		},
+		getTicketHistory: function(projectId, dateFrom,dateTo, onSuccess, onError){
+			$http.get("tickets/dates/"+projectId+"/"+dateFrom+"/"+dateTo).then(onSuccess, onError);
 		}
 	}
 });

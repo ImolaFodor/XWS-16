@@ -1,6 +1,15 @@
 <div ng-controller="reportsController" ng-init = "init()">
 <md-content >
 <div class="container">    
+			<md-input-container>
+  					<label>Date from: </label>
+  					<input type="text" ng-model="datefrom" placeholder="yyyy-MM-dd">
+				</md-input-container>
+				<md-input-container>
+  					<label>Date to: </label>
+  					<input type="text" ng-model="dateto" placeholder="yyyy-MM-dd"></input>
+				</md-input-container>
+			
             <md-card >
                 <md-card-content>
                     <md-list>
@@ -12,7 +21,7 @@
                     </md-list>
                 </md-card-content>
             </md-card>
-            <md-content ng-show="showProjectReport" >
+            <md-content ng-show="showAllReports" >
             	<p>Zadaci dodeljeni korisnicima</p>
             	<div ng-repeat = "report in reports">
             	<div layout = "row">
@@ -35,10 +44,21 @@
     			</div>
     			<md-divider></md-divider>
     			</div>
+    			
+    			<p>Izvestaj 3</p>
+            	<div ng-repeat = "report3 in reports3">
+            	<div layout = "row">
+            		<label flex = "15">{{GetFormattedDate(report3.date)}}</label>
+    				<md-progress-linear md-mode="determinate" value="{{report3.lTicketCount}}" flex = "50"></md-progress-linear>
+    				<div flex = "4"></div>
+    				<label flex = "10">{{report3.lTicketCount}}</label>
+    			</div>
+    			<md-divider></md-divider>
+    			</div>
 			</md-content>
 			
 
-
+</div>
 
 </md-content>
 </div>

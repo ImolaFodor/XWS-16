@@ -1,6 +1,6 @@
 app.controller('reportsController', function($scope, ticketService, loginService, userService, projectService){
 	$scope.init = function(){
-		console.log("REPOTS");
+		
 		loginService.getProfile(function(response){
 			$scope.user = response.data;
 			loadProjectsAndUsers();
@@ -17,18 +17,34 @@ app.controller('reportsController', function($scope, ticketService, loginService
 			
 		});
 	}
+		function GetFormattedDate(thd) {
+    				var Date = thd;
+    				var month = format(thd.getMonth() + 1);
+    				var day = format(thd.getDate());
+    				var year = format(thd.getFullYear());
+    				return month + "/" + day + "/" + year;
+				}
+	
+	
 		$scope.openProjectReport = function(project){
-			$scope.showProjectReport = true;
+			$scope.showAllReports = true;
 			$scope.project = project;
 			ticketService.getPercentagesByUserOnProject($scope.project, function(response){
 				$scope.reports = response.data;
+				console.log($scope.reports);
 				});
 
 			ticketService.getPercentagesByUserOnProjectDone($scope.project, function(response){
 				$scope.reports2 = response.data;
+				console.log($scope.reports2);
 			});
-		
-	}
+			
+			ticketService.getTicketHistory($scope.project, $scope.datefrom, $scope.dateto, function(response){
+				$scope.reports3 = response.data;
+				console.log($scope.reports3);
+			});
+			
+			}
 			
 	
 	
