@@ -25,6 +25,12 @@ input.ng-untouched.ng-invalid {
      color: red;
      border-color: red;
 }
+.tooltipdemoBasicUsage md-toolbar .md-toolbar-tools .md-button,
+.tooltipdemoBasicUsage md-toolbar .md-toolbar-tools .md-button:hover {
+  box-shadow: none;
+  border: none;
+  transform: none;
+  -webkit-transform: none; }
 </style>
 <md-dialog data-ng-init="init()">
     <md-dialog-content>
@@ -84,39 +90,46 @@ input.ng-untouched.ng-invalid {
 					        <md-card-actions layout="row" layout-align="end center">
 					          <md-button class="md-icon-button" aria-label="Add" ng-click = "addComment()">
 					             <md-icon  class="material-icons" >mode_comment</md-icon>
+					             <md-tooltip>Add comment</md-tooltip>
 					          </md-button>
 					          <md-button class="md-icon-button" aria-label="Cancel">
+					          	<md-tooltip>Cancel</md-tooltip>
 					            <md-icon  class="material-icons" >cancel</md-icon>
 					          </md-button>
 					        </md-card-actions>
 					      </md-card>
-					      <h5>Comments:</h5>
-					      <div ng-repeat = "comment in ticket.comments" ng-show = "ticket.comments.length>0">
+					      <h2>Comments:</h3>
+					      <div ng-repeat = "comment in ticket.comments | orderBy: '-datetime'" ng-show = "ticket.comments.length>0">
 					      	<md-card>
-					        <md-card-title>
-					          <md-card-title-text>
-					            <span class="md-headline">{{comment.user.name}}'s comment</span>
-					          </md-card-title-text>
-					        </md-card-title>
+					      		<md-card-header>
+					      			<md-card-header-text>
+					      				<h5>{{comment.user.name}}'s comment</h5>
+					      			</md-card-header-text>
+					      		</md-card-header>
+					      		<md-divider></md-divider>
+					             <div><md-datepicker ng-model = "comment.datetime" disabled></md-datepicker></div>
+					             <md-divider></md-divider>
 							     <md-input-container flex >
-		    						<label>{{'New_comment' | translate}}</label>
-		            				<textarea name="description" ng-model="comment.text" ></textarea>
+		            				<textarea name="description" ng-model="comment.text" ng-disabled = "!comment.textEnable"></textarea>
 		        				</md-input-container>
 					        <md-card-actions layout="row" layout-align="end center">
 					          <md-button class="md-icon-button" aria-label="Edit">
-					             <md-icon  class="material-icons" >mode_edit</md-icon>
+					             <md-icon  class="material-icons" ng-click = "editComment(comment)">mode_edit</md-icon>
+					             <md-tooltip>Edit comment</md-tooltip>
 					          </md-button>
-					          <md-button class="md-icon-button" aria-label="Add">
-					             <md-icon  class="material-icons" >mode_comment</md-icon>
+					          <md-button class="md-icon-button" aria-label="Reset" ng-if = "comment.textEnable">
+					             <md-icon  class="material-icons" ng-click = "cancelChange(comment)">cancel</md-icon>
+					             <md-tooltip>Reset changes</md-tooltip>
 					          </md-button>
 					          <md-button class="md-icon-button" aria-label="Cancel">
-					            <md-icon  class="material-icons" >cancel</md-icon>
+					            <md-icon  class="material-icons" ng-click = "deleteComment(comment)">delete_forever</md-icon>
+					             <md-tooltip>Delete comment</md-tooltip>
 					          </md-button>
 					        </md-card-actions>
 					      </md-card>
 					      
 					      </div>
-                	</md-content>	
+                	</md-content>
                 </div>
                 </md-tab-body>
             </md-tab>
@@ -127,7 +140,7 @@ input.ng-untouched.ng-invalid {
                 </md-tab-body>
             </md-tab>
     </md-dialog-content>
-    <md-dialog-actions class =  "cancelSaveCv" >
+    <md-dialog-actions class =  "" >
         <md-button class = "md-primary md-raised" ng-click="cancel()">{{'CANCEL' | translate}}</md-button>
         <md-button ng-hide = "" class = "md-primary md-raised" ng-click="save()" ng-disabled="ticketInfo.$invalid">{{'SAVE' | translate}}</md-button>
     </md-dialog-actions>

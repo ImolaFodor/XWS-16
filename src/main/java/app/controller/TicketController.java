@@ -173,5 +173,18 @@ public class TicketController {
 		
 		return new ResponseEntity(retVal, HttpStatus.OK);
 	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/comment/{id}")
+	public ResponseEntity deleteComment(@PathVariable("id") int id){
+		Comment comment = commentRepository.findOne(id);
+		if(comment == null){
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		
+		System.out.println("delete");
+		commentRepository.delete(comment);
+		return new ResponseEntity(HttpStatus.OK);
+		
+	}
 
 }

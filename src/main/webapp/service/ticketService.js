@@ -25,6 +25,9 @@ app.service('ticketService', function($http){
 		},
 		getTicketHistory: function(projectId, dateFrom,dateTo, onSuccess, onError){
 			$http.get("tickets/dates/"+projectId+"/"+dateFrom+"/"+dateTo).then(onSuccess, onError);
+		},
+		deleteComment: function(ticketId, onSuccess, onError){
+			$http.delete("tickets/comment/"+ticketId).then(onSuccess, onError);
 		}
 	}
 });

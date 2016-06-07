@@ -48,6 +48,7 @@ app.controller('reportsController', function($scope, ticketService,
 					$scope.reports3 = response.data;
 					angular.forEach($scope.reports3, function(report){
 						report.date = $scope.retDateFromLong(report.date);
+						
 					})
 					$scope.showReport3 = true;
 		});
