@@ -74,16 +74,16 @@ public class TicketController {
 		if(t == null){
 			return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
+		final Set<Comment> updatedComments = update.getComments();
+		updatedComments.forEach(comment -> comment.setTicket(update));
+		commentRepository.save(updatedComments);
 		
-		for(Comment comment : update.getComments()){
-			comment.setTicket(update);
-		}
 		ticketRepository.save(update);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity updateTicket(@RequestBody Ticket update){
+	public ResponseEntity saveTicket(@RequestBody Ticket update){
 		ticketRepository.save(update);
 		return new ResponseEntity(HttpStatus.OK);
 	}
@@ -181,7 +181,6 @@ public class TicketController {
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 		
-		System.out.println("delete");
 		commentRepository.delete(comment);
 		return new ResponseEntity(HttpStatus.OK);
 		

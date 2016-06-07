@@ -50,11 +50,6 @@ app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, S
 		});
 	}
 	$scope.deleteComment = function(comment){
-		if(comment.id){
-			ticketService.deleteComment(comment.id, function(){
-				
-			});
-		}
 		var index;
 		var i =0;
 		for(i;i<$scope.ticket.comments.length; i++){
