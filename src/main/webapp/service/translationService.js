@@ -20,7 +20,7 @@ translation.config(function ($translateProvider) {
         CANCEL: 'Cancel',
         SAVE: 'Save',
         USERNAME_EXISTS: 'Username already exists. Choose another',
-        PASSWORD_NOT_EQUAL: 'Password not equal',
+        PASSWORD_NOT_EQUAL: 'Passwords are not equal!',
         PASSWORD_NOT_EQUAL_MESSAGE: 'Please enter correct password',
         PASSWORD_NOT_OK: "Neispravna lozinka",
         OK: 'Ok',

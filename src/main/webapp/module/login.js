@@ -25,22 +25,44 @@ app.controller('login', function($scope, $state, $mdDialog, $translate, loginSer
         		console.log("NO USERR")
         		$scope.neispravnaLoznika = true;
         		$scope.nePostojiKorisnik = true;
-        	}else if(response.data == "USER_NOT_ACTIVATED"){
-        		 $mdDialog.show(
-   				      $mdDialog.alert()
-   				        .parent(angular.element(document.querySelector('#popupContainer')))
-   				        .clickOutsideToClose(true)
-   				        .title($translate.instant('USER_NOT_ACTIVATED'))
-   				        .textContent($translate.instant('USER_NOT_ACTIVATED_MESSAGE'))
-   				        .ariaLabel($translate.instant('USER_NOT_ACTIVATED'))
-   				        .ok($translate.instant('OK'))
-   				        .targetEvent(ev)
-   				    ).then(function(){
-   				     $scope.openActivationForm();
-   				    });
         	}
         	
         });
+   };
+   $scope.registerForm = function(){
+	   $scope.showRegisterForm = true;
+	   $scope.showLoginForm = false;
+   };
+   $scope.cancelRegister = function (){
+	   $scope.showRegisterForm = false;
+	   $scope.showLoginForm = true;
+	   $scope.user = {};
+	   $scope.repeat_password = "";
+   };
+   
+   $scope.registerUser = function(ev){
+	   if($scope.user.password != $scope.repeat_password){
+		   $scope.repeat_password = "";
+		   return;
+	   }
+	   
+	   loginService.registerUser($scope.user, function(){
+		   $mdDialog.show(
+				      $mdDialog.alert()
+				        .parent(angular.element(document.querySelector('#popupContainer')))
+				        .clickOutsideToClose(true)
+				        .title('Success')
+				        .textContent($translate.instant('YOU HAVE SUCCESSFULLY REGISTERD'))
+				        .ariaLabel($translate.instant('Success'))
+				        .ok($translate.instant('OK'))
+				        .targetEvent(ev)
+				    ).then(function(){
+				    	 $scope.cancelRegister();
+				    });
+		  
+	   },function(response){
+		   $scope.userExists = true;
+	   });
    };
    
 });
