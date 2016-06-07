@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.model.Comment;
 import app.model.Project;
 import app.model.Ticket;
 import app.model.Ticket.Status;
 import app.model.User;
 import app.reportModel.ProjectTicketsByUserReport;
 import app.reportModel.TicketHistory;
+import app.repository.CommentRepository;
 import app.repository.ProjectRepository;
 import app.repository.TicketRepository;
 import app.repository.UserRepository;
@@ -36,6 +38,8 @@ public class TicketController {
 	UserRepository userRepository;
 	@Autowired
 	ProjectRepository projectRepository;
+	@Autowired
+	CommentRepository commentRepository;
 	
 	TicketHistory th= new TicketHistory();
 	
@@ -69,6 +73,10 @@ public class TicketController {
 		Ticket t = ticketRepository.findOne(id);
 		if(t == null){
 			return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+		
+		for(Comment comment : update.getComments()){
+			comment.setTicket(update);
 		}
 		ticketRepository.save(update);
 		return new ResponseEntity(HttpStatus.OK);

@@ -32,40 +32,92 @@ input.ng-untouched.ng-invalid {
             <md-tab id="">
                 <md-tab-label>{{'TICKET DETAILS' | translate}}</md-tab-label>
                 <md-tab-body>
-                <form name = "ticketInfo">
-                	<md-content class = "" ><div layout = "column" layout-padding  flex = "70">
-                	 
-                		<md-input-container >
-    						<label>{{'LABEL' | translate}}</label>
-            				<input required name="label" ng-model="ticket.label" >
-        				</md-input-container>
-                		<md-input-container >
-    						<label>{{'NAME' | translate}}</label>
-            				<input required name="name" ng-model="ticket.name" >
-        				</md-input-container>
-        				<md-input-container >
-    						<label>{{'CREATED_BY' | translate}}</label>
-            				<input readonly required name="name" ng-model="ticket.ticketCreator.name" >
-        				</md-input-container>
-        				<md-input-container>
-        				<label>{{'ASSIGN TO'
-							| translate}}</label> <md-select  ng-model="ticket.ticketAssigned"  ng-model-options="{trackBy: '$value.id'}"> <md-option
-							ng-repeat="user in ticket.project.usersOnProject" ng-value="{{user}}">{{user.name}}</md-option> </md-select>
-        				</md-input-container>
-        				<md-input-container flex> <label>{{'PRIORITY'
-							| translate}}</label> <md-select ng-required ng-model="ticket.priority"> <md-option
-							ng-repeat="p in priority" value="{{p}}">{{p}}</md-option> </md-select> </md-input-container>
-        				<md-input-container > <label>{{'STATUS'
-							| translate}}</label> <md-select required ng-model="ticket.status"> <md-option
-							ng-repeat="s in status" value="{{s}}">{{s}}</md-option> </md-select> </md-input-container>
-						<md-input-container >
-    						<label>{{'DESCRIPTION' | translate}}</label>
-            				<textarea name="description" ng-model="ticket.description" ></textarea>
-        				</md-input-container>
-        				
-						</div>
-                	</md-content>
-                	</form>
+                <div layout = "row">
+                <div flex = "50">
+	                <form name = "ticketInfo">
+	                	<md-content class = "" ><div layout = "column" layout-padding >
+	                	 
+	                		<md-input-container >
+	    						<label>{{'LABEL' | translate}}</label>
+	            				<input required name="label" ng-model="ticket.label" >
+	        				</md-input-container>
+	                		<md-input-container >
+	    						<label>{{'NAME' | translate}}</label>
+	            				<input required name="name" ng-model="ticket.name" >
+	        				</md-input-container>
+	        				<md-input-container >
+	    						<label>{{'CREATED_BY' | translate}}</label>
+	            				<input readonly required name="name" ng-model="ticket.ticketCreator.name" >
+	        				</md-input-container>
+	        				<md-input-container>
+	        				<label>{{'ASSIGN TO'
+								| translate}}</label> <md-select  ng-model="ticket.ticketAssigned"  ng-model-options="{trackBy: '$value.id'}"> <md-option
+								ng-repeat="user in ticket.project.usersOnProject" ng-value="{{user}}">{{user.name}}</md-option> </md-select>
+	        				</md-input-container>
+	        				<md-input-container flex> <label>{{'PRIORITY'
+								| translate}}</label> <md-select ng-required ng-model="ticket.priority"> <md-option
+								ng-repeat="p in priority" value="{{p}}">{{p}}</md-option> </md-select> </md-input-container>
+	        				<md-input-container > <label>{{'STATUS'
+								| translate}}</label> <md-select required ng-model="ticket.status"> <md-option
+								ng-repeat="s in status" value="{{s}}">{{s}}</md-option> </md-select> </md-input-container>
+							<md-input-container >
+	    						<label>{{'DESCRIPTION' | translate}}</label>
+	            				<textarea name="description" ng-model="ticket.description" ></textarea>
+	        				</md-input-container>
+	        				
+							</div>
+	                	</md-content>
+	                	</form>
+	                	</div>
+	                	
+                	<md-content flex layout = "column">
+                	<md-card>
+					        <md-card-title>
+					          <md-card-title-text>
+					            <span class="md-headline">{{loggedUser.name}}'s comment</span>
+					          </md-card-title-text>
+					        </md-card-title>
+							     <md-input-container flex >
+		    						<label>{{'New_comment' | translate}}</label>
+		            				<textarea name="description" ng-model="newComment.text" ></textarea>
+		        				</md-input-container>
+					        <md-card-actions layout="row" layout-align="end center">
+					          <md-button class="md-icon-button" aria-label="Add" ng-click = "addComment()">
+					             <md-icon  class="material-icons" >mode_comment</md-icon>
+					          </md-button>
+					          <md-button class="md-icon-button" aria-label="Cancel">
+					            <md-icon  class="material-icons" >cancel</md-icon>
+					          </md-button>
+					        </md-card-actions>
+					      </md-card>
+					      <h5>Comments:</h5>
+					      <div ng-repeat = "comment in ticket.comments" ng-show = "ticket.comments.length>0">
+					      	<md-card>
+					        <md-card-title>
+					          <md-card-title-text>
+					            <span class="md-headline">{{comment.user.name}}'s comment</span>
+					          </md-card-title-text>
+					        </md-card-title>
+							     <md-input-container flex >
+		    						<label>{{'New_comment' | translate}}</label>
+		            				<textarea name="description" ng-model="comment.text" ></textarea>
+		        				</md-input-container>
+					        <md-card-actions layout="row" layout-align="end center">
+					          <md-button class="md-icon-button" aria-label="Edit">
+					             <md-icon  class="material-icons" >mode_edit</md-icon>
+					          </md-button>
+					          <md-button class="md-icon-button" aria-label="Add">
+					             <md-icon  class="material-icons" >mode_comment</md-icon>
+					          </md-button>
+					          <md-button class="md-icon-button" aria-label="Cancel">
+					            <md-icon  class="material-icons" >cancel</md-icon>
+					          </md-button>
+					        </md-card-actions>
+					      </md-card>
+					      
+					      </div>
+                	</md-content>	
+                </div>
                 </md-tab-body>
             </md-tab>
              <md-tab  id="">

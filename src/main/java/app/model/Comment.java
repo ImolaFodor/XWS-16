@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,13 +24,14 @@ public class Comment {
 	
 	private Date datetime;
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn
 	private User user;
 	
-	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@NotNull
+	@ManyToOne
 	@JoinColumn
+	@JsonIgnore
 	private Ticket ticket;
 
 	public int getId() {
@@ -79,7 +81,6 @@ public class Comment {
 		result = prime * result + ((datetime == null) ? 0 : datetime.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
-		result = prime * result + ((ticket == null) ? 0 : ticket.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}

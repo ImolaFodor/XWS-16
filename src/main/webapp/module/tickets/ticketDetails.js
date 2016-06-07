@@ -5,6 +5,8 @@ app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, S
 		$scope.priority = PRIORITY;
 		$scope.loggedUser = loggedUser
 		console.log($scope.loggedUser);
+		$scope.newComment = {};
+		$scope.newComment.user = loggedUser;
 	}
 	
 	$scope.cancel = function(){
@@ -23,5 +25,12 @@ app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, S
 				$scope.cancel();
 			});
 		}
+	}
+	
+	$scope.addComment = function(){
+		$scope.newComment.datetime = new Date();
+		var com = $scope.newComment
+		$scope.ticket.comments.push(com);
+		$scope.newComment = {};
 	}
 });
