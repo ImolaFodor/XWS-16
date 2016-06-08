@@ -50,7 +50,8 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 	          loggedUser: $scope.loggedUser,
 	          ticket: ticket
 	       }).then(function(){
-	    	   $scope.project.projectTickets.push(ticket);
+	    	   //$scope.project.projectTickets.push(ticket);
+	    	   $scope.init();
 	       });
 	}
 });

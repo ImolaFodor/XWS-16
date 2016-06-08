@@ -1,0 +1,21 @@
+<div>
+	<md-content>
+		<div ng-repeat = "change in ticket.ticketChanges | orderBy: '-date_time'" ng-show = "ticket.ticketChanges.length>0">
+			<md-card>
+				<md-card-header>
+				<md-card-header-text>
+					<h5>{{change.user.name}} changed ticket</h5>
+				</md-card-header-text>
+				</md-card-header>
+				<md-divider></md-divider>
+				     <div><md-datepicker ng-model = "change.date_time" disabled></md-datepicker></div>
+				     <md-divider></md-divider>
+				     <p ng-show = "change.nameChanged">Ticket name changed to '{{change.newName}}'</p>
+				     <p ng-show = "change.descriptionChanged">Ticket description changed to '{{change.description}}'</p>
+				     <p ng-show = "change.statusChanged">Ticket status changed to '{{change.newStatus}}'</p>
+				     <p ng-show = "change.prioritiyChanged">Ticket name changed to '{{change.newPriority}}'</p>
+				     <p ng-show = "change.assignedChanged">Ticket resigned  to '{{change.newUserAssigned}}'</p>
+      	  </md-card>
+	   </div>
+	</md-content>
+</div>

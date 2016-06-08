@@ -17,6 +17,7 @@ app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, S
 	$scope.save = function(){
 		if($scope.ticket.id){
 			$scope.ticket.dateCreated = new Date();
+			$scope.ticket.project.projectTickets = [];
 			ticketService.saveTicket($scope.ticket, $scope.loggedUser, function(response){
 				$scope.cancel();
 			});
@@ -69,6 +70,9 @@ app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, S
 			comment.datetime = $scope.retDateFromLong(comment.datetime);
 			comment.textEnable = false;
 		})
+		
+		angular.forEach($scope.ticket.ticketChanges, function(change){
+			change.date_time = $scope.retDateFromLong(change.date_time);
+		})
 	}
-	
 });
