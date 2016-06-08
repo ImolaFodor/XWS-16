@@ -20,11 +20,13 @@ import app.model.Comment;
 import app.model.Project;
 import app.model.Ticket;
 import app.model.Ticket.Status;
+import app.model.TicketChange;
 import app.model.User;
 import app.reportModel.ProjectTicketsByUserReport;
 import app.reportModel.TicketHistory;
 import app.repository.CommentRepository;
 import app.repository.ProjectRepository;
+import app.repository.TicketChangeRepository;
 import app.repository.TicketRepository;
 import app.repository.UserRepository;
 
@@ -34,6 +36,8 @@ public class TicketController {
 
 	@Autowired
 	TicketRepository ticketRepository;
+	@Autowired
+	TicketChangeRepository ticketChangeRepository;
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
@@ -68,17 +72,25 @@ public class TicketController {
 	}
 	
 	@PreAuthorize("isAuthenticated()")
-	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-	public ResponseEntity updateTicket(@RequestBody Ticket update, @PathVariable("id") int id){
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/{user_id}")
+	public ResponseEntity updateTicket(@RequestBody Ticket update, @PathVariable("id") int id,@PathVariable("id") User user_id){
 		Ticket t = ticketRepository.findOne(id);
+		//User u = userRepository.findOne(user_id);
 		if(t == null){
 			return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-		final Set<Comment> updatedComments = update.getComments();
-		updatedComments.forEach(comment -> comment.setTicket(update));
-		commentRepository.save(updatedComments);
 		
+		for(Comment comment : update.getComments()){
+			comment.setTicket(update);
+		}
 		ticketRepository.save(update);
+		
+		if(update.getStatus().equals(app.model.Ticket.Status.DONE)){
+		Date sysdate= new Date();
+		TicketChange ticketChange= new TicketChange(sysdate, user_id, update);
+		ticketChangeRepository.save(ticketChange);
+		}
+		
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	@PreAuthorize("isAuthenticated()")

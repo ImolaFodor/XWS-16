@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -27,9 +29,22 @@ public class TicketChange {
 	@JoinColumn
 	private User user;
 	
+	@NotNull
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn
+	@JsonIgnore
 	private Ticket ticket;
+	
+	public TicketChange(Date date_time, User user, Ticket ticket) {
+		super();
+		this.date_time = date_time;
+		this.user = user;
+		this.ticket = ticket;
+	}
+	
+	public TicketChange() {
+	}
+
 
 	public int getId() {
 		return id;

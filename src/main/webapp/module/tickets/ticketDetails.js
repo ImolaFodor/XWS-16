@@ -17,7 +17,7 @@ app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, S
 	$scope.save = function(){
 		if($scope.ticket.id){
 			$scope.ticket.dateCreated = new Date();
-			ticketService.saveTicket($scope.ticket, function(response){
+			ticketService.saveTicket($scope.ticket, $scope.loggedUser, function(response){
 				$scope.cancel();
 			});
 		}else{

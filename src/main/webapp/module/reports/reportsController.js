@@ -43,7 +43,7 @@ app.controller('reportsController', function($scope, ticketService,
 	}
 	
 	$scope.getReport3 = function(){
-		ticketService.getTicketHistory($scope.project, $scope.startDateReport3,
+		ticketService.getTicketCreatedHistory($scope.project, $scope.startDateReport3,
 				$scope.endDateReport3, function(response) {
 					$scope.reports3 = response.data;
 					angular.forEach($scope.reports3, function(report){
@@ -53,6 +53,31 @@ app.controller('reportsController', function($scope, ticketService,
 					$scope.showReport3 = true;
 		});
 	}
+	
+	$scope.getReport45 = function(repNo){
+		$scope.repNo=repNo;
+		
+		ticketService.getTicketDoneHistory($scope.project, $scope.user.id, $scope.startDateReport3,
+				$scope.endDateReport3, $scope.repNo, function(response) {
+					
+					$scope.reports45 = response.data;
+					angular.forEach($scope.reports3, function(report){
+						report.date = $scope.retDateFromLong(report.date);
+					})
+					
+		if (repNo==4){
+    		$scope.showReport3 = false;
+    		$scope.showReport4 = true;
+    		$scope.showReport5 = false;
+		} else if(repNo==5){
+    		$scope.showReport3 = false;
+    		$scope.showReport4 = false;
+    		$scope.showReport5 = true;
+		}
+		
+		});
+	}
+	
 	$scope.retDateFromLong = function(long){
 		var date = new Date(long);
 		return date;
