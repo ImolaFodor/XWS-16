@@ -15,7 +15,7 @@
                     <md-list>
                         <md-list-item class="" ng-repeat="project in projects | filter : {name: search.name}" ng-click="openProjectDetails(project)" ng-show="projects.length > 0">
                             <p style = "color:FF6600; font-size:100%;"> {{ project.name }} </p>
-                            <md-icon  class="material-icons" ng-click="deleteRestaurant(restaurant, $event)">clear</md-icon>
+                            <md-icon  class="material-icons" >clear</md-icon>
                             <md-divider></md-divider>
                         </md-list-item>
                         <md-list-item ng-show="projects.length === 0"> <label>{{ "NO_PROJECTS_FOUND" | translate}}</label></md-list-item>

@@ -1,0 +1,55 @@
+<style>
+ md-dialog {
+       height:90%;
+       width:50%;
+       max-height:100%;
+       max-width: 100%;
+       position: relative;
+       top: 10;
+       left: 10;
+       right: 10;
+       down: 10;
+       border-radius: 5;
+   }
+   
+ md-dialog-actions.cancelSaveCv{
+ 	position: absolute;
+ 	bottom : 0;
+ 	right : 0;
+ }
+ input.ng-invalid {
+   color: red;
+   border-color: red;
+}
+input.ng-untouched.ng-invalid {
+     color: red;
+     border-color: red;
+}
+.tooltipdemoBasicUsage md-toolbar .md-toolbar-tools .md-button,
+.tooltipdemoBasicUsage md-toolbar .md-toolbar-tools .md-button:hover {
+  box-shadow: none;
+  border: none;
+  transform: none;
+  -webkit-transform: none; }
+</style>
+<md-dialog data-ng-init="init()">
+<md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>CHOOSE USER TO ADD</h2>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <md-list ng-init = "init()">
+              <md-list-item class="" ng-repeat="user in freeUsers" ng-click="addUser(user)" ng-show="freeUsers.length > 0">
+                  <p> {{ user.name }} </p>
+                  <p ng-show = "user.selected">SELECTED</p>
+                  <md-divider></md-divider>
+               </md-list-item>
+               <md-list-item ng-show="all_users.length === 0"> <label>{{ "NO_FREE_USERS_FOUND" | translate}}</label></md-list-item>
+        </md-list>
+    </md-dialog-content>
+     <md-dialog-actions class =  "cancelSaveCv" >
+        <md-button ng-hide = "" class = "md-primary md-raised" ng-click="save()">{{'SAVE' | translate}}</md-button>
+    </md-dialog-actions>
+</md-dialog>
