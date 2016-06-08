@@ -45,5 +45,14 @@ public class ProjectController {
 		
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/{projId}")
+	public ResponseEntity getProject(@PathVariable("projId") int projId){
+		Project project = projectRepository.findOne(projId);
+		if(project == null){
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity(project, HttpStatus.OK);
+	}
+	
 
 }

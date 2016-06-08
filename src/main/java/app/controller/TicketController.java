@@ -144,6 +144,16 @@ public class TicketController {
 				ticketChange.setNewUserAssigned(newT.getTicketAssigned().getName());
 			}
 		}
+		if(oldT.getTicketAssigned() == null && newT.getTicketAssigned() != null){
+			isAnythingChanged = true;
+			ticketChange.setAssignedChanged(true);
+			ticketChange.setNewUserAssigned(newT.getTicketAssigned().getName());
+		}
+		if(oldT.getTicketAssigned()!=null && newT.getTicketAssigned() == null){
+			isAnythingChanged = true;
+			ticketChange.setAssignedChanged(true);
+			ticketChange.setNewUserAssigned("");
+		}
 		
 		if (isAnythingChanged) {
 			System.out.println(ticketChange);
@@ -157,6 +167,9 @@ public class TicketController {
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity saveTicket(@RequestBody Ticket update) {
+		Project project = projectRepository.findOne(update.getProject().getId());
+		project.setTicketsNum(project.getTicketsNum()+1);
+		projectRepository.save(project);
 		ticketRepository.save(update);
 		return new ResponseEntity(HttpStatus.OK);
 	}

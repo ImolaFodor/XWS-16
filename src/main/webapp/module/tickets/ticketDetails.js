@@ -22,6 +22,8 @@ app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, S
 				$scope.cancel();
 			});
 		}else{
+			//var project = angular.copy($scope.project)
+			$scope.ticket.project.projectTickets = [];
 			$scope.ticket.ticketCreator = $scope.loggedUser;
 			$scope.ticket.dateCreated = new Date();
 			ticketService.insertTicket($scope.ticket, function(response){

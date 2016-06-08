@@ -5,6 +5,10 @@ app.service('projectService', function($http){
 		},
 		addUserToProject: function(userId, projectId, onSuccess, onError){
 			$http.post('/projects/addUser/'+userId+"/"+projectId+"/").then(onSuccess, onError);
+		},
+		getProject: function(projectId, onSuccess, onError){
+			$http.get('projects/'+projectId).then(onSuccess,onError);
 		}
+		
 	}
 })

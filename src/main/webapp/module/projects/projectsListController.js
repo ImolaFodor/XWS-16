@@ -1,7 +1,6 @@
 app.controller('projectsListController', function($scope,$state, $mdDialog, projectService, ticketService, loginService, userService){
 	$scope.init = function(){
 		loginService.getProfile(function(response){
-			console.log(response);
 			if(response.data.id){
 				$scope.loggedUser = response.data;
 			}else{
@@ -13,12 +12,12 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 		$scope.projects = [];
 		projectService.getProjects(function(response){
 			$scope.projects = response.data;
-			console.log($scope.projects);
 			angular.forEach($scope.projects, function(project){
 				project.projectTickets = [];
 				ticketService.getTicketsByProject(project.id, function(response){
 					project.projectTickets = response.data;
 				});
+				
 			});
 		})
 		
@@ -37,6 +36,8 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 	          clickOutsideToClose: true,
 	          loggedUser: $scope.loggedUser,
 	          ticket: ticket
+	       }).then(function(){
+	    	   loadProject();
 	       });
 	}
 	
@@ -44,6 +45,7 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 		var ticket = {};
 		ticket.project = $scope.project;
 		ticket.ticketCreator = $scope.loggedUser;
+		ticket.label = $scope.project.label +"-"+ ($scope.project.ticketsNum+1).toString();
 		$mdDialog.show({
 	          controller: 'ticketDetailsController',
 	          templateUrl: 'module/tickets/ticketDetails.html',
@@ -51,8 +53,8 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 	          loggedUser: $scope.loggedUser,
 	          ticket: ticket
 	       }).then(function(){
-	    	   $scope.project.projectTickets.push(ticket);
-	    	   $scope.init();
+	    	   loadProject();
+	    	   //$scope.project.ticketsNum++;
 	       });
 	}
 	
@@ -67,7 +69,7 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 	          userToAdd: userToAdd,
 	          project: $scope.project
 	       }).then(function(){
-	    	   $scope.init();
+	    	   loadProject();
 	       });
 	}
 	function loadFreeUsers(){
@@ -86,10 +88,18 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 					}
 				}
 			}
-			console.log(indexes);
 			while(indexes.length){
 				$scope.freeUsers.splice(indexes.pop(),1);
 			}
+		});
+	}
+	function loadProject(){
+		projectService.getProject($scope.project.id, function(response){
+			$scope.project = response.data;
+			ticketService.getTicketsByProject($scope.project.id, function(response){
+				$scope.project.projectTickets = response.data;
+			}, function(response){
+			});
 		});
 	}
 });
