@@ -56,7 +56,6 @@ public class TicketChange {
 	@JoinColumn
 	private User user;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn
 	@JsonIgnore

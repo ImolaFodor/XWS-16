@@ -1,32 +1,27 @@
-app.controller('reportsController', function($scope, ticketService,
+app.controller('reportsController', function($scope, $state, ticketService,
 		loginService, userService, projectService) {
 	$scope.init = function() {
-
 		loginService.getProfile(function(response) {
-			$scope.user = response.data;
-			loadProjectsAndUsers();
+			if(response.data.id){
+				$scope.user = response.data;
+				loadProjectsAndUsers();
+			}else{
+				$state.transitionTo('login');
+			}
+		}, function(response){
+			$state.transitionTo('login');
 		});
 		$scope.startDateReport3 = new Date();
 		$scope.endDateReport3 = new Date();
+		$scope.startDate4 = new Date();
+		$scope.endDate4 = new Date();
+		
+		$scope.startDate5 = new Date();
+		$scope.endDate5 = new Date();
+		
 	}
 
-	function loadProjectsAndUsers() {
-		projectService.getProjects(function(response) {
-			$scope.projects = response.data;
-		});
 
-		userService.getUsers(function(response) {
-			$scope.users = response.data;
-
-		});
-	}
-	/*$scope.getFormattedDate = function(thd) {
-		var Date = thd;
-		var month = format(thd.getMonth() + 1);
-		var day = format(thd.getDate());
-		var year = format(thd.getFullYear());
-		return month + "/" + day + "/" + year;
-	}*/
 
 	$scope.openProjectReport = function(project) {
 		$scope.showAllReports = true;
@@ -53,7 +48,26 @@ app.controller('reportsController', function($scope, ticketService,
 					$scope.showReport3 = true;
 		});
 	}
-	
+	$scope.getReportGetDoneByProject = function(){
+		ticketService.getPercentegeDoneByProject($scope.project, $scope.startDate4, $scope.endDate4, function(response){
+			$scope.reportDoneProject = response.data;
+			angular.forEach($scope.reportDoneProject, function(report){
+				report.date = $scope.retDateFromLong(report.date);
+			})
+			$scope.showReport4 = true;
+		})
+	}
+	$scope.getReportGetDoneByProjectUser = function(){
+		alert("DASD");
+		ticketService.getPercentegeDoneByProjectUser($scope.project,$scope.user.id, $scope.startDate5, $scope.endDate5, function(response){
+			alert("DALLLL");
+			$scope.reportDoneProjectUser = response.data;
+			angular.forEach($scope.reportDoneProjectUser, function(report){
+				report.date = $scope.retDateFromLong(report.date);
+			})
+			$scope.showReport5 = true;
+		})
+	}
 	$scope.getReport45 = function(repNo){
 		$scope.repNo=repNo;
 		
@@ -81,6 +95,17 @@ app.controller('reportsController', function($scope, ticketService,
 	$scope.retDateFromLong = function(long){
 		var date = new Date(long);
 		return date;
+	}
+	
+	function loadProjectsAndUsers() {
+		projectService.getProjects(function(response) {
+			$scope.projects = response.data;
+		});
+
+		userService.getUsers(function(response) {
+			$scope.users = response.data;
+
+		});
 	}
 
 });

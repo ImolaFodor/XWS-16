@@ -14,6 +14,6 @@ app.service('loginService', function($http){
 		},
         logout: function(onSuccess, onError){
             $http.post('/logout').then(onSuccess, onError)
-        }
+        },
 	}
 });

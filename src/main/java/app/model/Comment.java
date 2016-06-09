@@ -28,7 +28,6 @@ public class Comment {
 	@JoinColumn
 	private User user;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn
 	@JsonIgnore

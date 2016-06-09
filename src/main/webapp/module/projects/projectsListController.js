@@ -19,12 +19,14 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 				});
 				
 			});
-		})
+		});
 		
+		$scope.isNew = false;
 	};
 	
 	$scope.openProjectDetails = function(project){
 		$scope.showProjectDetails = true;
+		$scope.isNew = false;
 		$scope.project = project;
 		loadFreeUsers();
 	}
@@ -54,7 +56,6 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 	          ticket: ticket
 	       }).then(function(){
 	    	   loadProject();
-	    	   //$scope.project.ticketsNum++;
 	       });
 	}
 	
@@ -71,6 +72,49 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 	       }).then(function(){
 	    	   loadProject();
 	       });
+	}
+	
+	$scope.removeUser = function(user){
+		projectService.removeUserFromProject(user.id, $scope.project.id, function(response){
+			loadProject();
+		})
+	}
+	
+	$scope.addNewProject = function(){
+		$scope.showProjectDetails = true;
+		$scope.isNew = true;
+		$scope.project = {};
+		$scope.project.label = "";
+		$scope.project.name = "";
+		
+	}
+	
+	$scope.cancelSaveProject = function(){
+		if($scope.project.id){
+			$scope.init();
+		}
+		$scope.showProjectDetails = false;
+		$scope.isNew = false;
+		$scope.project = {};
+	}
+	
+	$scope.saveProject = function(){
+		if($scope.project.id){
+			projectService.updateProject($scope.project, function(response){
+				$scope.project = {};
+				$scope.isNew = false;
+				$scope.showProjectDetails = false;
+				$scope.init();
+			})
+		}else{
+			projectService.insertProject($scope.project, function(response){
+				$scope.projects.push($scope.project);
+				$scope.project = {};
+				$scope.isNew = false;
+				$scope.showProjectDetails = false;
+				$scope.init();
+			})
+		}
 	}
 	function loadFreeUsers(){
 		userService.getAllUsers(function(response){

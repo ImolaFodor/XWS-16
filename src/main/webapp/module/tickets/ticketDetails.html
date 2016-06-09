@@ -64,7 +64,7 @@ input.ng-untouched.ng-invalid {
 								| translate}}</label> <md-select ng-required ng-model="ticket.priority"> <md-option
 								ng-repeat="p in priority" value="{{p}}">{{p}}</md-option> </md-select> </md-input-container>
 	        				<md-input-container > <label>{{'STATUS'
-								| translate}}</label> <md-select required ng-model="ticket.status"> <md-option
+								| translate}}</label> <md-select required ng-model="ticket.status" ng-disabled = "ticket.status === 'DONE'"> <md-option
 								ng-repeat="s in status" value="{{s}}">{{s}}</md-option> </md-select> </md-input-container>
 							<md-input-container >
 	    						<label>{{'DESCRIPTION' | translate}}</label>
@@ -141,6 +141,7 @@ input.ng-untouched.ng-invalid {
             </md-tab>
     </md-dialog-content>
     <md-dialog-actions class =  "" >
+    	<md-button class = "md-warn md-raised" ng-click="deleteTicket()">{{'DELETE' | translate}}</md-button>
         <md-button class = "md-primary md-raised" ng-click="cancel()">{{'CANCEL' | translate}}</md-button>
         <md-button ng-hide = "" class = "md-primary md-raised" ng-click="save()" ng-disabled="ticketInfo.$invalid">{{'SAVE' | translate}}</md-button>
     </md-dialog-actions>

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -50,4 +51,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer>{
 	
 	/*@Query("SELECT t FROM  Ticket t WHERE t.projec.id =:id and t.ticketAssigned.id=:id_user")
 	public Set<Ticket> getTicketsByProjectAndAssignedUser(@Param("id") int id, @Param("id_user") int id_user);*/
+    
+    @Modifying
+    @Query("DELETE Ticket t where t.id=:entityId")
+    void deleteTicket(@Param("entityId") int entityId);
 }

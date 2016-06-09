@@ -1,4 +1,4 @@
-app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, STATUS, ticket, ticketService,loggedUser){
+app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, STATUS, ticket, ticketService,loggedUser, projectService){
 	$scope.init = function(){
 		$scope.ticket = ticket;
 		$scope.status = STATUS;
@@ -66,6 +66,15 @@ app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, S
 	$scope.retDateFromLong = function(long){
 		var date = new Date(long);
 		return date;
+	}
+	
+	$scope.deleteTicket = function(){
+		alert("DELETE")
+		projectService.deleteTicket($scope.ticket.id, $scope.ticket.project.id, function(response){
+			$scope.cancel();
+		}, function(response){
+			console.log(response);
+		});
 	}
 	function convertDates(){
 		angular.forEach($scope.ticket.comments, function(comment){

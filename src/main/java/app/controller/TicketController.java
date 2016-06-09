@@ -144,31 +144,31 @@ public class TicketController {
 				ticketChange.setNewUserAssigned(newT.getTicketAssigned().getName());
 			}
 		}
-		if(oldT.getTicketAssigned() == null && newT.getTicketAssigned() != null){
+		if (oldT.getTicketAssigned() == null && newT.getTicketAssigned() != null) {
 			isAnythingChanged = true;
 			ticketChange.setAssignedChanged(true);
 			ticketChange.setNewUserAssigned(newT.getTicketAssigned().getName());
 		}
-		if(oldT.getTicketAssigned()!=null && newT.getTicketAssigned() == null){
+		if (oldT.getTicketAssigned() != null && newT.getTicketAssigned() == null) {
 			isAnythingChanged = true;
 			ticketChange.setAssignedChanged(true);
 			ticketChange.setNewUserAssigned("");
 		}
-		
+
 		if (isAnythingChanged) {
 			System.out.println(ticketChange);
 			return ticketChange;
 		} else {
 			return null;
 		}
-		
+
 	}
 
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity saveTicket(@RequestBody Ticket update) {
 		Project project = projectRepository.findOne(update.getProject().getId());
-		project.setTicketsNum(project.getTicketsNum()+1);
+		project.setTicketsNum(project.getTicketsNum() + 1);
 		projectRepository.save(project);
 		ticketRepository.save(update);
 		return new ResponseEntity(HttpStatus.OK);
@@ -225,6 +225,57 @@ public class TicketController {
 		return new ResponseEntity(allUserReports, HttpStatus.OK);
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/projectDone/{projectId}/{date_from}/{date_to}")
+	public ResponseEntity getDonePercentegeProject(@PathVariable("projectId") int projectId,
+			@PathVariable("date_from") Date dateFrom, @PathVariable("date_to") Date dateTo) {
+		Project project = projectRepository.findOne(projectId);
+
+		if (project == null) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+
+		int allTicketsNum = ticketRepository.getTicketByProject(projectId);
+		List<TicketChange> allProjectTChanges = ticketChangeRepository
+				.findTicketChangeByProjectAndStatus(project.getId(), Status.DONE);
+		Calendar cStart = Calendar.getInstance();
+		cStart.setTime(dateFrom);
+		Calendar cEnd = Calendar.getInstance();
+		cEnd.setTime(dateTo);
+		cEnd.add(Calendar.DAY_OF_MONTH, 1);
+		Calendar cCurr = Calendar.getInstance();
+		ArrayList<ProjectTicketsByUserReport> retVal = new ArrayList<ProjectTicketsByUserReport>();
+		retVal = getProjectTicketsByReport(allProjectTChanges, cStart, cEnd, allTicketsNum);
+
+		return new ResponseEntity(retVal, HttpStatus.OK);
+
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/projectDone/{projectId}/{userId}/{date_from}/{date_to}")
+	public ResponseEntity getDonePercentegeProjectUser(@PathVariable("projectId") int projectId, @PathVariable("userId") int userId,
+			@PathVariable("date_from") Date dateFrom, @PathVariable("date_to") Date dateTo) {
+		Project project = projectRepository.findOne(projectId);
+
+		if (project == null) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		
+
+		int allTicketsNum = ticketRepository.getTicketByProject(projectId);
+		List<TicketChange> allProjectTChanges = ticketChangeRepository
+				.findTicketChangeByProjectAndStatusAndUser(project.getId(), userId, Status.DONE);
+		Calendar cStart = Calendar.getInstance();
+		cStart.setTime(dateFrom);
+		Calendar cEnd = Calendar.getInstance();
+		cEnd.setTime(dateTo);
+		cEnd.add(Calendar.DAY_OF_MONTH, 1);
+		Calendar cCurr = Calendar.getInstance();
+		ArrayList<ProjectTicketsByUserReport> retVal = new ArrayList<ProjectTicketsByUserReport>();
+		retVal = getProjectTicketsByReport(allProjectTChanges, cStart, cEnd, allTicketsNum);
+
+		return new ResponseEntity(retVal, HttpStatus.OK);
+
+	}
+
 	@SuppressWarnings("deprecation")
 	@RequestMapping(method = RequestMethod.GET, value = "/dates/{pr_id}/{date_from}/{date_to}")
 	public ResponseEntity getTicketHistory(@PathVariable("pr_id") int pr_id, @PathVariable("date_from") Date dateFrom,
@@ -244,7 +295,6 @@ public class TicketController {
 
 			TicketHistory ticketH = new TicketHistory();
 			ticketH.setDate(cStart.getTime());
-			ticketH.setlTicketCount(4);
 			ArrayList<Ticket> ticketsByDate = new ArrayList<Ticket>();
 			for (Ticket t : allProjectTickets) {
 				if (t.getDateCreated().getDay() == cStart.getTime().getDay()
@@ -275,6 +325,33 @@ public class TicketController {
 		commentRepository.delete(comment);
 		return new ResponseEntity(HttpStatus.OK);
 
+	}
+
+	private ArrayList<ProjectTicketsByUserReport> getProjectTicketsByReport(List<TicketChange> allProjectTChanges,
+			Calendar cStart, Calendar cEnd, int allTicketsNum) {
+		Calendar cCurr = Calendar.getInstance();
+		ArrayList<ProjectTicketsByUserReport> retVal = new ArrayList<ProjectTicketsByUserReport>();
+		while (cStart.getTime().before(cEnd.getTime())) {
+			ProjectTicketsByUserReport ptbur = new ProjectTicketsByUserReport();
+			ptbur.setDate(cStart.getTime());
+			ArrayList<TicketChange> tcDate = new ArrayList<TicketChange>();
+
+			for (TicketChange t : allProjectTChanges) {
+				cCurr.setTime(t.getDate_time());
+				if (cCurr.get(Calendar.DAY_OF_MONTH) == cStart.get(Calendar.DAY_OF_MONTH)
+						&& cCurr.get(Calendar.MONTH) == cStart.get(Calendar.MONTH)
+						&& cCurr.get(Calendar.YEAR) == cStart.get(Calendar.YEAR)) {
+					tcDate.add(t);
+				}
+			}
+			double percentage = ((double) tcDate.size() / (double) allTicketsNum) * 100;
+			ptbur.setNumberOfTickets(tcDate.size());
+			ptbur.setPercentege(percentage);
+			retVal.add(ptbur);
+			cStart.add(Calendar.DAY_OF_MONTH, 1);
+		}
+
+		return retVal;
 	}
 
 }

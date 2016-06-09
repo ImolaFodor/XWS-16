@@ -36,7 +36,7 @@
     			<md-divider></md-divider>
     			</div>
     			
-    			<h4>Izvestaj 3</h4>
+    			<h4>Dinamika kreiranja zadataka na projektu</h4>
     			<div layout = "row">
     			<md-datepicker ng-model = "startDateReport3" md-max-date = "endDateReport3" md-placeholder = "Enter start date"></md-datepicker>
     			<md-datepicker ng-model = "endDateReport3" md-min-date = "startDateReport3" md-placeholder = "Enter end date"></md-datepicker>
@@ -52,34 +52,34 @@
     			<md-divider></md-divider>
     			</div>
     			
-    			<h4>Izvestaj 4</h4>
+    			<h4>Dinamika završavanja zadataka na projektu</h4>
     			<div layout = "row">
-    			<md-datepicker ng-model = "startDateReport3" md-max-date = "endDateReport3" md-placeholder = "Enter start date"></md-datepicker>
-    			<md-datepicker ng-model = "endDateReport3" md-min-date = "startDateReport3" md-placeholder = "Enter end date"></md-datepicker>
-    			<md-button class = "md-primary" ng-click ="getReport45(4)">{{'GET_REPORT_4' | translate}}</md-button>
+    			<md-datepicker ng-model = "startDate4" md-max-date = "endDate4" md-placeholder = "Enter start date"></md-datepicker>
+    			<md-datepicker ng-model = "endDate4" md-min-date= "startDate4" md-placeholder = "Enter end date"></md-datepicker>
+    			<md-button class = "md-primary" ng-click ="getReportGetDoneByProject()">{{'GET_REPORT_4' | translate}}</md-button>
     			</div>
-            	<div ng-repeat = "report3 in reports45" ng-show = "showReport4">
+            	<div ng-repeat = "report in reportDoneProject" ng-show = "showReport4">
             	<div layout = "row">
-            		<md-datepicker ng-model = "report3.date" disabled></md-datepicker>
-    				<md-progress-linear md-mode="determinate" value="{{report3.lTicketCount}}" flex = "50"></md-progress-linear>
+            		<md-datepicker ng-model = "report.date" disabled></md-datepicker>
+    				<md-progress-linear md-mode="determinate" value="{{report.numberOfTickets}}" flex = "50"></md-progress-linear>
     				<div flex = "4"></div>
-    				<label flex = "10">{{report3.lTicketCount}}</label>
+    				<label flex = "10">{{report.numberOfTickets}}</label>
     			</div>
     			<md-divider></md-divider>
     			</div>
     			
-    			<h4>Izvestaj 5</h4>
+    			<h4>Aktivnost korisnika na projektu</h4>
     			<div layout = "row">
-    			<md-datepicker ng-model = "startDateReport3" md-max-date = "endDateReport3" md-placeholder = "Enter start date"></md-datepicker>
-    			<md-datepicker ng-model = "endDateReport3" md-min-date = "startDateReport3" md-placeholder = "Enter end date"></md-datepicker>
-    			<md-button class = "md-primary" ng-click ="getReport45(5)">{{'GET_REPORT_5' | translate}}</md-button>
+    			<md-datepicker ng-model = "startDate5" md-max-date = "endDate5" md-placeholder = "Enter start date"></md-datepicker>
+    			<md-datepicker ng-model = "endDate5" md-min-date = "startDate5" md-placeholder = "Enter end date"></md-datepicker>
+    			<md-button class = "md-primary" ng-click ="getReportGetDoneByProjectUser()">{{'GET_REPORT_5' | translate}}</md-button>
     			</div>
-            	<div ng-repeat = "report3 in reports45" ng-show = "showReport5">
+            	<div ng-repeat = "report in reportDoneProjectUser" ng-show = "showReport5">
             	<div layout = "row">
-            		<md-datepicker ng-model = "report3.date" disabled></md-datepicker>
-    				<md-progress-linear md-mode="determinate" value="{{report3.lTicketCount}}" flex = "50"></md-progress-linear>
+            		<md-datepicker ng-model = "report.date" disabled></md-datepicker>
+    				<md-progress-linear md-mode="determinate" value="{{report.numberOfTickets}}" flex = "50"></md-progress-linear>
     				<div flex = "4"></div>
-    				<label flex = "10">{{report3.lTicketCount}}</label>
+    				<label flex = "10">{{report3.numberOfTickets}}</label>
     			</div>
     			<md-divider></md-divider>
     			</div>

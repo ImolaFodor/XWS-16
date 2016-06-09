@@ -17,57 +17,68 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import app.model.User.Gender;
+
 @Entity
 public class User {
 
-	public enum Role{
+	public enum Role {
 		ADMIN, KORISNIK
 	}
-	
+
+	public enum Gender {
+		MALE, FEMALE
+	}
+
 	@Id
-    @GeneratedValue
-    public int id;
+	@GeneratedValue
+	public int id;
 
-    @NotNull
-    private String name;
+	@NotNull
+	private String name;
+
+	@NotNull
+	@Column(unique = true)
+	private String username;
+
+	@NotNull
+	private String password;
+
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Role role = Role.KORISNIK;
 	
-    @NotNull
-    @Column(unique = true)
-    private String username;
-    
-    @NotNull
-    private String password;
-    
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private Role role = Role.KORISNIK;
-    
-    private String email;
-    
-    @OneToMany(mappedBy = "ticketCreator", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Set<Ticket> ticketsCreated;
-    
-    @JsonIgnore
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	private Set<Project> projects;
-    
-    @JsonIgnore
-    @OneToMany(mappedBy = "ticketAssigned", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Ticket> ticketsAssigned;
-    
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Set<Comment> comments;
-    
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Set<TicketChange> ticketChanges;
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
+	
+	private String email;
 
-    public User() {
+	@OneToMany(mappedBy = "ticketCreator", fetch = FetchType.EAGER)
+	@JsonIgnore
+	private Set<Ticket> ticketsCreated;
+
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private Set<Project> projects;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "ticketAssigned", fetch = FetchType.EAGER)
+	private Set<Ticket> ticketsAssigned;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	@JsonIgnore
+	private Set<Comment> comments;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	@JsonIgnore
+	private Set<TicketChange> ticketChanges;
+
+	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -115,43 +126,61 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public Set<Ticket> getTicketsCreated() {
 		return ticketsCreated;
 	}
+
 	public void setTicketsCreated(Set<Ticket> ticketsCreated) {
 		this.ticketsCreated = ticketsCreated;
 	}
+
 	public Set<Ticket> getTicketsAssigned() {
 		return ticketsAssigned;
 	}
+
 	public void setTicketsAssigned(Set<Ticket> ticketsAssigned) {
 		this.ticketsAssigned = ticketsAssigned;
 	}
+
 	public Set<Comment> getComments() {
 		return comments;
 	}
+
 	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
 	}
+
 	public Set<TicketChange> getTicketChanges() {
 		return ticketChanges;
 	}
+
 	public void setTicketChanges(Set<TicketChange> ticketChanges) {
 		this.ticketChanges = ticketChanges;
 	}
-	
+
 	public Set<Project> getProjects() {
 		return projects;
 	}
+
 	public void setProjects(Set<Project> projects) {
 		this.projects = projects;
 	}
+	
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
@@ -173,6 +202,8 @@ public class User {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
+			return false;
+		if (gender != other.gender)
 			return false;
 		if (id != other.id)
 			return false;
@@ -201,8 +232,5 @@ public class User {
 		return "User [id=" + id + ", name=" + name + ", username=" + username + ", password=" + password + ", role="
 				+ role + ", email=" + email + "]";
 	}
-    
-	
-    
 
 }

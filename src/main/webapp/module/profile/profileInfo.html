@@ -1,0 +1,73 @@
+<form name="formMan">
+<div ng-controller="profileMainController" ng-init="init()" layout="row"  ng-cloak layout-padding>
+<md-content flex layout="column" class="frame">
+	<h2>{{'CREATE_MANAGER' | translate}}</h2>
+    <div layout="column" flex="70">
+    	<div ng-hide = "successCreated" layout = "column">
+        <md-input-container flex> <label>{{'NAME'
+				| translate}}</label> <input required name="name" ng-model="loggedUser.name">
+			<div ng-messages="formMan.name.$error" ng-if="formMan.name.$dirty">
+				<div ng-message="required">{{'ERROR_REQUIRED_FIELD' |
+					translate}}</div>
+			</div>
+			</md-input-container>
+			<md-input-container flex> <label>{{'USERNAME'
+				| translate}}</label> <input required name="username"
+				ng-model="loggedUser.username">
+			<div ng-messages="formMan.username.$error"
+				ng-if="formMan.username.$dirty">
+				<div ng-message="required">{{'ERROR_REQUIRED_FIELD' |
+					translate}}</div>
+				<div ng-message="userExists">{{'USERNAME_EXISTS' | translate}}</div>
+			</div>
+			</md-input-container>
+			<md-input-container flex> <label>{{'PASSWORD'
+				| translate}}</label> <input required name="password"
+				ng-model="loggedUser.password" type="password">
+			<div ng-messages="register.password.$error"
+				ng-if="register.password.$dirty">
+				<div ng-message="required">{{'ERROR_REQUIRED_FIELD' |
+					translate}}</div>
+			</div>
+			</md-input-container>
+			<md-input-container flex> <label>REPEAT PASSWORD</label> <input required name="repeat_password"
+				ng-model="repeat_password" type="password">
+			<div ng-messages="repeat_password.$error"
+				ng-if="register.repeat_password.$dirty">
+				<div ng-message="required">{{'ERROR_REQUIRED_FIELD' |
+					translate}}</div>
+				<span ng-if="passNotEqual" role="alert">{{'PASSWORD_NOT_EQUAL'
+					| translate}}</span>
+			</div>
+			</md-input-container>
+			<md-input-container flex> <label>{{'GENDER'
+				| translate}}</label> <md-select ng-model="loggedUser.gender"> <md-option
+				ng-repeat="gender in genders" value="{{gender}}">{{gender
+			| translate}}</md-option> </md-select> </md-input-container>
+
+			<md-input-container flex> <label>{{'EMAIL_ADDRESS'
+				| translate}}</label> <input required name="email" ng-model="loggedUser.email"
+				type="email">
+			<div ng-messages="formMan.email.$error"
+				ng-if="formMan.email.$dirty">
+				<div ng-message="required">{{'ERROR_REQUIRED_FIELD' |
+					translate}}</div>
+			</div>
+			</md-input-container>
+   
+    <div layout = "row">
+    <md-dialog-actions class =  "cancelSaveCv" >
+        <md-button class = "md-primary" ng-click="cancel()">{{'CANCEL' | translate}}</md-button>
+        <md-button class = "md-primary" ng-click="saveUser($event)" ng-disabled="formMan.$invalid">{{'SAVE' | translate}}</md-button>
+    </md-dialog-actions>
+    </div>
+    </div>
+
+    <div class="user-image" flow-init="{singleFile:true, testChunks:false}" flow-name="uploader.flow" flex="30">
+        <img ng-src="{{getImageUrl()}}" flow-img="$flow.files[0]" flow-btn/>
+    </div>
+ </div>
+ </md-content>
+</div>
+
+</form>

@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 public class Ticket {
@@ -31,7 +31,7 @@ public class Ticket {
 	@Id
 	@GeneratedValue
 	private int id;
-	
+
 	@NotNull
 	private String label;
 
@@ -39,16 +39,16 @@ public class Ticket {
 	private String name;
 
 	private String description;
-	
+
 	private Date dateCreated;
-	
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private Priority priority=Priority.TRIVIAL;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private Status status= Status.TO_DO;
+	private Priority priority = Priority.TRIVIAL;
+
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Status status = Status.TO_DO;
 
 	@NotNull
 	@ManyToOne
@@ -64,10 +64,10 @@ public class Ticket {
 	@JoinColumn
 	private User ticketAssigned;
 
-	@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=true)
+	@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private Set<Comment> comments;
 
-	@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=true)
+	@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private Set<TicketChange> ticketChanges;
 
 	public int getId() {
@@ -149,7 +149,7 @@ public class Ticket {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	
+
 	public Date getDateCreated() {
 		return dateCreated;
 	}
@@ -157,7 +157,7 @@ public class Ticket {
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
 	}
-	
+
 	public String getLabel() {
 		return label;
 	}
@@ -243,8 +243,6 @@ public class Ticket {
 			return false;
 		return true;
 	}
-	
-	
 
 	@Override
 	public String toString() {

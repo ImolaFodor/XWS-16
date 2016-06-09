@@ -22,8 +22,8 @@
                     </md-list>
                 </md-card-content>
             </md-card>
-            <md-button ng-show = "" class="md-fab md-fab-bottom-right fixed" aria-label="Add" data-ng-click="addNewRestaurant()">
-                <md-icon class="material-icons">add</md-icon>
+            <md-button ng-show = "true" class="md-primary md-raised" aria-label="Add" data-ng-click="addNewProject()">
+                ADD NEW PROJECT
             </md-button>
         </div>
     </md-content>
@@ -35,16 +35,29 @@
     		<label>{{project.name}}</label>
         </md-input-container>
      </md-toolbar>
-        <div hide-gt-sm></div>
-    	<md-input-container >
-    		<label>{{'NAME' | translate}}</label>
-            <input name="name" ng-model="project.name" >
-        </md-input-container>
-        <md-input-container >
-    		<label>{{'DETAILS' | translate}}</label>
-            <textarea name="details" ng-model="project.details" ></textarea>
-        </md-input-container>
-        	<div class = "container">
+     	<div class = "container" flex >
+     	   <div layout = column>
+		        <md-input-container >
+		    		<label>{{'LABEL' | translate}}</label>
+		            <input name="label" ng-model="project.label" ng-enabled = "isNew">
+		        </md-input-container>
+		    	<md-input-container >
+		    		<label>{{'NAME' | translate}}</label>
+		            <input name="name" ng-model="project.name" >
+		        </md-input-container>
+		        <md-input-container >
+		    		<label>{{'DETAILS' | translate}}</label>
+		            <textarea name="details" ng-model="project.details" ></textarea>
+		        </md-input-container>
+	        </div>
+	        <div>
+	        	<div layout = "row">
+	        		<md-button class = "md-primary md-raised" ng-click = "saveProject()" ng-disabled = "project.label === '' || project.name === ''">SAVE</md-button>
+	        		<md-button class = "md-primary md-raised" ng-click = "cancelSaveProject()">CANCEL</md-button>
+	        	</div>
+	        </div>
+        </div>
+        	<div class = "container" flex ng-hide = "isNew">
 	        <md-card>
         	<md-card-content>
         	<div layout = "column">
@@ -54,7 +67,10 @@
 		        <md-list>
 		        	<md-list-item ng-repeat ="user in project.usersOnProject" ng-show = "project.usersOnProject.length >0">
 		        		<p>{{user.name}}</p>
-		        		<md-icon  class="material-icons" >clear</md-icon>
+		        		<md-button class="md-icon-button" aria-label="Add" ng-click = "removeUser(user)">
+					             <md-icon  class="material-icons" >delete</md-icon>
+					             <md-tooltip>Remove from project</md-tooltip>
+					          </md-button>
 		        	</md-list-item>
 		        	<md-list-item ng-show="project.usersOnProject.length === 0"> <label>{{ "NO_USERS_ON_PROJECT" | translate}}</label>
 		        	</md-list-item>
@@ -62,7 +78,7 @@
         	</md-card-content>
         </md-card>
         </div>
-        <div class = "container">
+        <div class = "container" flex ng-hide ="isNew">
     	<md-card>
                 <md-card-content>
                 <div layout = "column">
@@ -70,9 +86,8 @@
 				<md-button class ="md-primary " ng-click = "createNewTicket()" flex>{{'CREATE_NEW_TICKET' |translate}}</md-button>
 				</div>                
                     <md-list>
-                        <md-list-item class="" ng-repeat="ticket in project.projectTickets" ng-click="openTicketDetails(ticket)" ng-show="project.projectTickets.length > 0">
+                        <md-list-item class="" ng-repeat="ticket in project.projectTickets" ng-click = "openTicketDetails(ticket)" ng-show="project.projectTickets.length > 0">
                             <p> {{ ticket.name }} </p>
-                            <md-icon  class="material-icons" >clear</md-icon>
                             <md-divider></md-divider>
                         </md-list-item>
                         <md-list-item ng-show="project.projectTickets.length === 0"> <label>{{ "NO_PROJECT_TICKETS" | translate}}</label></md-list-item>
@@ -80,7 +95,10 @@
                 </md-card-content>
             </md-card>
         </div>
+       
     </md-content>
+    <md-content class = "frame" layout = "column" flex = "2" >
+    </md-content>	
     </div>
     
 </md-content>

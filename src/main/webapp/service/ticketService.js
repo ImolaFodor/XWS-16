@@ -31,6 +31,12 @@ app.service('ticketService', function($http){
 		},
 		deleteComment: function(ticketId, onSuccess, onError){
 			$http.delete("tickets/comment/"+ticketId).then(onSuccess, onError);
-		}
+		},
+		getPercentegeDoneByProject: function(projectId, dateFrom ,dateTo, onSuccess, onError){
+			$http.get("tickets/projectDone/"+projectId+"/"+dateFrom+"/"+dateTo+"/").then(onSuccess, onError);
+		},
+		getPercentegeDoneByProjectUser: function(projectId,userId, dateFrom ,dateTo, onSuccess, onError){
+			$http.get("tickets/projectDone/"+projectId+"/"+userId+"/"+dateFrom+"/"+dateTo+"/").then(onSuccess, onError);
+		},
 	}
 });
