@@ -71,7 +71,10 @@
 					| translate}}</span>
 			</div>
 			</md-input-container>
-
+			<md-input-container flex> <label>{{'GENDER'
+				| translate}}</label> <md-select ng-model="user.gender"> <md-option
+				ng-repeat="gender in genders" value="{{gender}}">{{gender
+			| translate}}</md-option> </md-select> </md-input-container>
 			<md-input-container flex> <label>{{'EMAIL_ADDRESS'
 				| translate}}</label> <input required name="email" ng-model="user.email"
 				type="email">

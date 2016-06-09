@@ -1,4 +1,5 @@
-app.controller('login', function($scope, $state, $mdDialog, $translate, loginService){
+app.controller('login', function($scope, $state, $mdDialog, $translate, loginService, GENDERS){
+	$scope.genders = GENDERS;
 	$scope.username = "";
 	$scope.password = "";
 	$scope.nePostojiKorisnik = false;
@@ -11,6 +12,7 @@ app.controller('login', function($scope, $state, $mdDialog, $translate, loginSer
 	$scope.passNotEqual = true;
 	$scope.activationForm = false;
 	$scope.userExists = false;
+	$scope.user.gender = 'MALE';
     $scope.loginUser = function(ev){
         loginService.login ($scope.username, $scope.password, function(response){
         	loginService.getProfile(function(response){
