@@ -77,7 +77,11 @@ public class ProjectController {
 		return new ResponseEntity(HttpStatus.OK);
 
 	}
-
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/byUser/{userId}")
+	public ResponseEntity getProjectsByUser(@PathVariable("userId") int userId){
+		return new ResponseEntity(projectRepository.getProjectsByUserId(userId), HttpStatus.OK);
+	}
 	@RequestMapping(method = RequestMethod.GET, value = "/{projId}")
 	public ResponseEntity getProject(@PathVariable("projId") int projId) {
 		Project project = projectRepository.findOne(projId);

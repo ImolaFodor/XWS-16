@@ -98,10 +98,17 @@ app.controller('reportsController', function($scope, $state, ticketService,
 	}
 	
 	function loadProjectsAndUsers() {
-		projectService.getProjects(function(response) {
-			$scope.projects = response.data;
-		});
-
+		if($scope.user.role === 'ADMIN'){
+			projectService.getProjects(function(response){
+				$scope.projects = response.data;
+			});
+		}else{
+			projectService.getProjectByUser($scope.user.id, function(response){
+				$scope.projects = response.data;
+			});
+		}
+				
+	
 		userService.getUsers(function(response) {
 			$scope.users = response.data;
 

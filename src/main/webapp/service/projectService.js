@@ -20,6 +20,9 @@ app.service('projectService', function($http){
 		},
 		updateProject: function(project, onSuccess, onError){
 			$http.put('projects/', project).then(onSuccess, onError);
+		},
+		getProjectByUser: function(userId, onSuccess, onError){
+			$http.get('projects/byUser/'+userId+"/").then(onSuccess, onError);
 		}
 		
 	}

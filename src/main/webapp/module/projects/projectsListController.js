@@ -3,6 +3,29 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 		loginService.getProfile(function(response){
 			if(response.data.id){
 				$scope.loggedUser = response.data;
+				if($scope.loggedUser.role === 'ADMIN'){
+					projectService.getProjects(function(response){
+						$scope.projects = response.data;
+						angular.forEach($scope.projects, function(project){
+							project.projectTickets = [];
+							ticketService.getTicketsByProject(project.id, function(response){
+								project.projectTickets = response.data;
+							});
+							
+						});
+					});
+				}else{
+					projectService.getProjectByUser($scope.loggedUser.id, function(response){
+						$scope.projects = response.data;
+						angular.forEach($scope.projects, function(project){
+							project.projectTickets = [];
+							ticketService.getTicketsByProject(project.id, function(response){
+								project.projectTickets = response.data;
+							});
+							
+						});
+					});
+				}
 			}else{
 				$state.transitionTo('login');
 			}
@@ -10,16 +33,7 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 			$state.transitionTo('login');
 		});
 		$scope.projects = [];
-		projectService.getProjects(function(response){
-			$scope.projects = response.data;
-			angular.forEach($scope.projects, function(project){
-				project.projectTickets = [];
-				ticketService.getTicketsByProject(project.id, function(response){
-					project.projectTickets = response.data;
-				});
-				
-			});
-		});
+		
 		
 		$scope.isNew = false;
 	};
