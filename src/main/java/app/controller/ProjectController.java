@@ -3,6 +3,7 @@ package app.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,17 +36,20 @@ public class ProjectController {
 	@Autowired
 	CommentRepository commentRepository;
 	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity getProjects() {
 		return new ResponseEntity(projectRepository.findAll(), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity insertProject(@RequestBody Project project){
 		projectRepository.save(project);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity updateProject(@RequestBody Project update){
 		Project project = projectRepository.findOne(update.getId());
@@ -58,7 +62,9 @@ public class ProjectController {
 		projectRepository.save(project);
 		return new ResponseEntity(HttpStatus.OK);
 	}
-
+	
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST, value = "/addUser/{userId}/{projectId}")
 	public ResponseEntity addUserToProject(@PathVariable("userId") int userId,
 			@PathVariable("projectId") int projectId) {
@@ -77,7 +83,7 @@ public class ProjectController {
 		return new ResponseEntity(HttpStatus.OK);
 
 	}
-	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(method = RequestMethod.GET, value = "/byUser/{userId}")
 	public ResponseEntity getProjectsByUser(@PathVariable("userId") int userId){
 		return new ResponseEntity(projectRepository.getProjectsByUserId(userId), HttpStatus.OK);
@@ -90,7 +96,8 @@ public class ProjectController {
 		}
 		return new ResponseEntity(project, HttpStatus.OK);
 	}
-
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.DELETE, value = "/removeUser/{userId}/{projectId}")
 	public ResponseEntity removeUserFromProject(@PathVariable("userId") int userId,
 			@PathVariable("projectId") int projectId) {
@@ -108,7 +115,8 @@ public class ProjectController {
 		userRepository.save(user);
 		return new ResponseEntity(HttpStatus.OK);
 	}
-
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.DELETE, value = "/removeTicket/{ticketId}/{projectId}")
 	public ResponseEntity removeTicketFromProject(@PathVariable("ticketId") int ticketId,
 			@PathVariable("projectId") int projectId) {
