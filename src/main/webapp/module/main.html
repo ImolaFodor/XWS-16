@@ -8,7 +8,7 @@ min-width: 200px;">
         </h2>
 
         <md-list layout="column" flex>
-            <md-button class="nav-option" ui-sref-active="active" ui-sref="main.dashboard">{{'DASHBOARD' | translate}}</md-button>
+            <md-button ng-if = "loggedUser.role != 'ADMIN'" class="nav-option" ui-sref-active="active" ui-sref="main.dashboard">{{'DASHBOARD' | translate}}</md-button>
             <md-button class="nav-option" ui-sref-active="active" ui-sref="main.profile">{{'MY PROFILE' | translate}}</md-button>
             <md-button ng-hide="" class="nav-option" ui-sref-active="active" ui-sref="main.projects">{{'MY PROJECTS' | translate}}</md-button>
             <md-button ng-hide="" class="nav-option" ui-sref-active="active" ui-sref="main.reports">{{'REPORTS' | translate}}</md-button>

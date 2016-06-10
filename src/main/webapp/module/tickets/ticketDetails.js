@@ -25,7 +25,6 @@ app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, S
 			//var project = angular.copy($scope.project)
 			$scope.ticket.project.projectTickets = [];
 			$scope.ticket.ticketCreator = $scope.loggedUser;
-			$scope.ticket.dateCreated = new Date();
 			ticketService.insertTicket($scope.ticket, function(response){
 				$scope.cancel();
 			});
@@ -69,7 +68,6 @@ app.controller('ticketDetailsController', function($scope, $mdDialog,PRIORITY, S
 	}
 	
 	$scope.deleteTicket = function(){
-		alert("DELETE")
 		projectService.deleteTicket($scope.ticket.id, $scope.ticket.project.id, function(response){
 			$scope.cancel();
 		}, function(response){

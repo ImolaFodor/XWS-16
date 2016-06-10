@@ -176,7 +176,13 @@ public class TicketController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/percentages/{pr_id}")
 	public ResponseEntity getPercentagesByUserOnProject(@PathVariable("pr_id") int pr_id) {
-		int tot_tickets = ticketRepository.findTicketByProject(pr_id);
+		
+		int tot_tickets = 0;
+		try{
+			tot_tickets = ticketRepository.findTicketByProject(pr_id);
+		}catch(Exception e){
+			tot_tickets = 0;
+		}
 		Project project = projectRepository.findOne(pr_id);
 
 		if (project == null) {
@@ -201,7 +207,12 @@ public class TicketController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/percentagesdone/{pr_id}")
 	public ResponseEntity getPercentagesByUserOnProjectDone(@PathVariable("pr_id") int pr_id) {
-		int tot_tickets = ticketRepository.findTicketByProject(pr_id);
+		int tot_tickets = 0;
+		try{
+			tot_tickets = ticketRepository.findTicketByProject(pr_id);
+		}catch(Exception e){
+			tot_tickets = 0;
+		}
 		Project project = projectRepository.findOne(pr_id);
 
 		if (project == null) {
@@ -234,7 +245,13 @@ public class TicketController {
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 
-		int allTicketsNum = ticketRepository.getTicketByProject(projectId);
+		int allTicketsNum  =0;
+		try{
+			 allTicketsNum = ticketRepository.getTicketByProject(projectId);
+			
+		}catch(Exception e){
+			 allTicketsNum =0;
+		}
 		List<TicketChange> allProjectTChanges = ticketChangeRepository
 				.findTicketChangeByProjectAndStatus(project.getId(), Status.DONE);
 		Calendar cStart = Calendar.getInstance();
@@ -259,8 +276,13 @@ public class TicketController {
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 		
-
-		int allTicketsNum = ticketRepository.getTicketByProject(projectId);
+		int allTicketsNum  =0;
+		try{
+			 allTicketsNum = ticketRepository.getTicketByProject(projectId);
+			
+		}catch(Exception e){
+			 allTicketsNum =0;
+		}
 		List<TicketChange> allProjectTChanges = ticketChangeRepository
 				.findTicketChangeByProjectAndStatusAndUser(project.getId(), userId, Status.DONE);
 		Calendar cStart = Calendar.getInstance();

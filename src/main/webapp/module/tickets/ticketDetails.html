@@ -70,7 +70,7 @@ input.ng-untouched.ng-invalid {
 	    						<label>{{'DESCRIPTION' | translate}}</label>
 	            				<textarea name="description" ng-model="ticket.description" ></textarea>
 	        				</md-input-container>
-	        				
+	        				<md-datepicker ng-model = "ticket.dateCreated" disabled></md-datepicker>
 							</div>
 	                	</md-content>
 	                	</form>
@@ -107,13 +107,15 @@ input.ng-untouched.ng-invalid {
 					      			</md-card-header-text>
 					      		</md-card-header>
 					      		<md-divider></md-divider>
-					             <div><md-datepicker ng-model = "comment.datetime" disabled></md-datepicker></div>
+					             <div layout = "row"><md-datepicker ng-model = "comment.datetime" disabled></md-datepicker> 
+					              <p>{{comment.datetime.getHours()}}h:{{comment.datetime.getMinutes()}}min</p></div>
+					            
 					             <md-divider></md-divider>
 							     <md-input-container flex >
 		            				<textarea name="description" ng-model="comment.text" ng-disabled = "!comment.textEnable"></textarea>
 		        				</md-input-container>
 					        <md-card-actions layout="row" layout-align="end center">
-					          <md-button class="md-icon-button" aria-label="Edit">
+					          <md-button ng-show = "loggedUser.id == comment.user.id || loggedUser.role == 'ADMIN'" class="md-icon-button" aria-label="Edit">
 					             <md-icon  class="material-icons" ng-click = "editComment(comment)">mode_edit</md-icon>
 					             <md-tooltip>Edit comment</md-tooltip>
 					          </md-button>
@@ -121,7 +123,7 @@ input.ng-untouched.ng-invalid {
 					             <md-icon  class="material-icons" ng-click = "cancelChange(comment)">cancel</md-icon>
 					             <md-tooltip>Reset changes</md-tooltip>
 					          </md-button>
-					          <md-button class="md-icon-button" aria-label="Cancel">
+					          <md-button ng-show = "loggedUser.id == comment.user.id || loggedUser.role == 'ADMIN'" class="md-icon-button" aria-label="Cancel">
 					            <md-icon  class="material-icons" ng-click = "deleteComment(comment)">delete_forever</md-icon>
 					             <md-tooltip>Delete comment</md-tooltip>
 					          </md-button>
@@ -141,7 +143,7 @@ input.ng-untouched.ng-invalid {
             </md-tab>
     </md-dialog-content>
     <md-dialog-actions class =  "" >
-    	<md-button class = "md-warn md-raised" ng-click="deleteTicket()">{{'DELETE' | translate}}</md-button>
+    	<md-button  ng-show = "loggedUser.role == 'ADMIN'" class = "md-warn md-raised" ng-click="deleteTicket()">{{'DELETE' | translate}}</md-button>
         <md-button class = "md-primary md-raised" ng-click="cancel()">{{'CANCEL' | translate}}</md-button>
         <md-button ng-hide = "" class = "md-primary md-raised" ng-click="save()" ng-disabled="ticketInfo.$invalid">{{'SAVE' | translate}}</md-button>
     </md-dialog-actions>

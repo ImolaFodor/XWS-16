@@ -10,6 +10,9 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 							project.projectTickets = [];
 							ticketService.getTicketsByProject(project.id, function(response){
 								project.projectTickets = response.data;
+								angular.forEach(project.projectTickets, function(ticket){
+									ticket.dateCreated = retDateFromLong(ticket.dateCreated);
+								});
 							});
 							
 						});
@@ -21,6 +24,9 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 							project.projectTickets = [];
 							ticketService.getTicketsByProject(project.id, function(response){
 								project.projectTickets = response.data;
+								angular.forEach(project.projectTickets, function(ticket){
+									ticket.dateCreated = retDateFromLong(ticket.dateCreated);
+								});
 							});
 							
 						});
@@ -156,8 +162,16 @@ app.controller('projectsListController', function($scope,$state, $mdDialog, proj
 			$scope.project = response.data;
 			ticketService.getTicketsByProject($scope.project.id, function(response){
 				$scope.project.projectTickets = response.data;
+				angular.forEach($scope.project.projectTickets, function(ticket){
+					ticket.dateCreated = retDateFromLong(ticket.dateCreated);
+				});
 			}, function(response){
 			});
 		});
+	}
+	
+	function retDateFromLong(long){
+		var date = new Date(long);
+		return date;
 	}
 });

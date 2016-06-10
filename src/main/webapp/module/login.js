@@ -16,8 +16,14 @@ app.controller('login', function($scope, $state, $mdDialog, $translate, loginSer
     $scope.loginUser = function(ev){
         loginService.login ($scope.username, $scope.password, function(response){
         	loginService.getProfile(function(response){
+        		
         		$scope.user = response.data;
-        		$state.transitionTo('main.dashboard');
+        		if($scope.user.role == 'ADMIN'){
+        			$state.transitionTo('main.projects');
+        		}else{
+        			$state.transitionTo('main.dashboard');
+        		}
+        		
         	});
         }, function(response){
         	console.log(response);

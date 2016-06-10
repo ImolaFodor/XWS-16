@@ -22,7 +22,7 @@
                     </md-list>
                 </md-card-content>
             </md-card>
-            <md-button ng-show = "true" class="md-primary md-raised" aria-label="Add" data-ng-click="addNewProject()">
+            <md-button ng-show = "loggedUser.role == 'ADMIN'" class="md-primary md-raised" aria-label="Add" data-ng-click="addNewProject()">
                 ADD NEW PROJECT
             </md-button>
         </div>
@@ -39,19 +39,19 @@
      	   <div layout = column>
 		        <md-input-container >
 		    		<label>{{'LABEL' | translate}}</label>
-		            <input name="label" ng-model="project.label" ng-enabled = "isNew">
+		            <input name="label" ng-model="project.label" ng-disabled = "loggedUser.role != 'ADMIN' || !isNew">
 		        </md-input-container>
 		    	<md-input-container >
 		    		<label>{{'NAME' | translate}}</label>
-		            <input name="name" ng-model="project.name" >
+		            <input name="name" ng-model="project.name" ng-disabled = "loggedUser.role != 'ADMIN'" >
 		        </md-input-container>
 		        <md-input-container >
 		    		<label>{{'DETAILS' | translate}}</label>
-		            <textarea name="details" ng-model="project.details" ></textarea>
+		            <textarea name="details" ng-model="project.details"  ng-disabled = "loggedUser.role != 'ADMIN'"></textarea>
 		        </md-input-container>
 	        </div>
 	        <div>
-	        	<div layout = "row">
+	        	<div layout = "row"  ng-show = "loggedUser.role == 'ADMIN'">
 	        		<md-button class = "md-primary md-raised" ng-click = "saveProject()" ng-disabled = "project.label === '' || project.name === ''">SAVE</md-button>
 	        		<md-button class = "md-primary md-raised" ng-click = "cancelSaveProject()">CANCEL</md-button>
 	        	</div>
@@ -62,12 +62,12 @@
         	<md-card-content>
         	<div layout = "column">
         		<h4>{{'USERS_WORKING_ON_PROJECT' |translate}}</h4>
-        		<md-button class ="md-primary " ng-click = "addUserToProject()" flex>{{'ADD_USER_TO_PROJECT' |translate}}</md-button>
+        		<md-button  ng-show = "loggedUser.role == 'ADMIN'" class ="md-primary " ng-click = "addUserToProject()" flex>{{'ADD_USER_TO_PROJECT' |translate}}</md-button>
         	</div>
 		        <md-list>
 		        	<md-list-item ng-repeat ="user in project.usersOnProject" ng-show = "project.usersOnProject.length >0">
 		        		<p>{{user.name}}</p>
-		        		<md-button class="md-icon-button" aria-label="Add" ng-click = "removeUser(user)">
+		        		<md-button  ng-show = "loggedUser.role == 'ADMIN'" class="md-icon-button" aria-label="Add" ng-click = "removeUser(user)">
 					             <md-icon  class="material-icons" >delete</md-icon>
 					             <md-tooltip>Remove from project</md-tooltip>
 					          </md-button>
@@ -86,7 +86,7 @@
 				<md-button class ="md-primary " ng-click = "createNewTicket()" flex>{{'CREATE_NEW_TICKET' |translate}}</md-button>
 				</div>                
                     <md-list>
-                        <md-list-item class="" ng-repeat="ticket in project.projectTickets" ng-click = "openTicketDetails(ticket)" ng-show="project.projectTickets.length > 0">
+                        <md-list-item class="" ng-repeat="ticket in project.projectTickets | orderBy: '-dateCreated'" ng-click = "openTicketDetails(ticket)" ng-show="project.projectTickets.length > 0">
                             <p> {{ ticket.name }} </p>
                             <md-divider></md-divider>
                         </md-list-item>

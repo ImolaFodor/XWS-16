@@ -12,15 +12,15 @@
     	<div class = "container" layout = "row" flex = "10">
     		<md-input-container >
 	    		<label>{{'NAME' | translate}}</label>
-	            	<input required name="name" ng-model="search.name" >
+	            	<input name="name" ng-model="search.name" >
 	        </md-input-container>
 	        <md-input-container flex> 
 	        <label>{{'PRIORITY'| translate}}</label>
-			 <md-select ng-required ng-model="search.priority">
+			 <md-select  ng-model="search.priority">
 			  <md-option ng-repeat="p in priority" value="{{p}}">{{p}}</md-option> </md-select> 
 			</md-input-container>
 	        <md-input-container > <label>{{'STATUS'
-					| translate}}</label> <md-select required ng-model="search.status" >
+					| translate}}</label> <md-select  ng-model="search.status" >
 					 <md-option ng-repeat="s in status" value="{{s}}">{{s}}</md-option> </md-select>
 			 </md-input-container>
     	</div>

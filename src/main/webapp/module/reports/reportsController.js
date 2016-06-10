@@ -1,4 +1,4 @@
-app.controller('reportsController', function($scope, $state, ticketService,
+app.controller('reportsController', function($scope, $state, $mdDialog,$translate, ticketService,
 		loginService, userService, projectService) {
 	$scope.init = function() {
 		loginService.getProfile(function(response) {
@@ -19,13 +19,16 @@ app.controller('reportsController', function($scope, $state, ticketService,
 		$scope.startDate5 = new Date();
 		$scope.endDate5 = new Date();
 		
+		$scope.report5user = -1;
 	}
-
-
 
 	$scope.openProjectReport = function(project) {
 		$scope.showAllReports = true;
-		$scope.project = project;
+		$scope.project = project.id;
+		$scope.currProject = project;
+		$scope.showReport3 = false;
+		$scope.showReport4 = false;
+		$scope.showReport5 = false;
 		ticketService.getPercentagesByUserOnProject($scope.project, function(
 				response) {
 			$scope.reports = response.data;
@@ -57,16 +60,27 @@ app.controller('reportsController', function($scope, $state, ticketService,
 			$scope.showReport4 = true;
 		})
 	}
-	$scope.getReportGetDoneByProjectUser = function(){
-		alert("DASD");
-		ticketService.getPercentegeDoneByProjectUser($scope.project,$scope.user.id, $scope.startDate5, $scope.endDate5, function(response){
-			alert("DALLLL");
-			$scope.reportDoneProjectUser = response.data;
-			angular.forEach($scope.reportDoneProjectUser, function(report){
-				report.date = $scope.retDateFromLong(report.date);
+	$scope.getReportGetDoneByProjectUser = function(ev){
+		if($scope.report5user != -1){
+			ticketService.getPercentegeDoneByProjectUser($scope.project,$scope.report5user, $scope.startDate5, $scope.endDate5, function(response){
+				$scope.reportDoneProjectUser = response.data;
+				angular.forEach($scope.reportDoneProjectUser, function(report){
+					report.date = $scope.retDateFromLong(report.date);
+				})
+				$scope.showReport5 = true;
 			})
-			$scope.showReport5 = true;
-		})
+		}else{
+		$mdDialog.show(
+			$mdDialog.alert()
+	        .parent(angular.element(document.querySelector('#popupContainer')))
+	        .clickOutsideToClose(true)
+	        .title('Error')
+	        .textContent($translate.instant('YOU MUST SELECT USER FOR THIS REPORT'))
+	        .ariaLabel($translate.instant('Error'))
+	        .ok($translate.instant('OK'))
+	        .targetEvent(ev)
+	    	);
+		}
 	}
 	$scope.getReport45 = function(repNo){
 		$scope.repNo=repNo;
@@ -107,11 +121,8 @@ app.controller('reportsController', function($scope, $state, ticketService,
 				$scope.projects = response.data;
 			});
 		}
-				
-	
 		userService.getUsers(function(response) {
 			$scope.users = response.data;
-
 		});
 	}
 

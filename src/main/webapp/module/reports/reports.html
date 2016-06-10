@@ -1,10 +1,11 @@
 <div ng-controller="reportsController" ng-init = "init()">
 <md-content >
 <div class="container">    
+			<h3>Choose project:</h3>
             <md-card >
                 <md-card-content>
                     <md-list>
-                        <md-list-item class="" ng-repeat="project in projects" ng-click="openProjectReport(project.id)" ng-show="projects.length > 0">
+                        <md-list-item class="" ng-repeat="project in projects" ng-click="openProjectReport(project)" ng-show="projects.length > 0">
                             <p style = "color:FF6600; font-size:100%;"> {{ project.name }} </p>
                             <md-divider></md-divider>
                         </md-list-item>
@@ -12,7 +13,7 @@
                     </md-list>
                 </md-card-content>
             </md-card>
-            <md-content ng-show="showAllReports" >
+            <md-content ng-show="showAllReports"  class = "container">
             	<h4>Zadaci dodeljeni korisnicima</h4>
             	<div ng-repeat = "report in reports">
             	<div layout = "row">
@@ -69,19 +70,27 @@
     			</div>
     			
     			<h4>Aktivnost korisnika na projektu</h4>
-    			<div layout = "row">
+    			<div layout = "column">
+    			
+    			<md-input-container flex = "60"> 
+			        <label>{{'USERS'| translate}}</label>
+					 <md-select ng-required ng-model="report5user">
+					  <md-option ng-repeat="user in currProject.usersOnProject" value="{{user.id}}">{{user.name}}</md-option> </md-select> 
+					</md-input-container>
+				<div layout = row>
     			<md-datepicker ng-model = "startDate5" md-max-date = "endDate5" md-placeholder = "Enter start date"></md-datepicker>
     			<md-datepicker ng-model = "endDate5" md-min-date = "startDate5" md-placeholder = "Enter end date"></md-datepicker>
-    			<md-button class = "md-primary" ng-click ="getReportGetDoneByProjectUser()">{{'GET_REPORT_5' | translate}}</md-button>
+    			<md-button class = "md-primary" ng-click ="getReportGetDoneByProjectUser($event)">{{'GET_REPORT_5' | translate}}</md-button>
     			</div>
             	<div ng-repeat = "report in reportDoneProjectUser" ng-show = "showReport5">
             	<div layout = "row">
             		<md-datepicker ng-model = "report.date" disabled></md-datepicker>
     				<md-progress-linear md-mode="determinate" value="{{report.numberOfTickets}}" flex = "50"></md-progress-linear>
     				<div flex = "4"></div>
-    				<label flex = "10">{{report3.numberOfTickets}}</label>
+    				<label flex = "10">{{report.numberOfTickets}}</label>
     			</div>
     			<md-divider></md-divider>
+    			</div>
     			</div>
 			</md-content>
 			
